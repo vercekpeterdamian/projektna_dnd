@@ -18,8 +18,9 @@ class Character:
         self.dsubclass = dsubclass
         self.background = background
 
-    def set_proficiency_bonus(self, prof_bonus):
-        self.prof_bonus = prof_bonus
+    def set_level(self, lvl):
+        self.lvl = lvl
+        self.prof_bonus = (lvl - 1) // 4 + 1
 
     def set_ability_stats(self, strg, dex, con, intl, wis, cha):
         self.strg = strg
@@ -36,34 +37,35 @@ class Character:
         self.cha_modifier = modifier(cha)
 
     def set_skills(self, proficiency_list):
+        self.skills = {}
         for skill in SKILLS_DEX:
-            self.skill = self.dex_modifier
+            self.skills[skill] = self.dex_modifier
             if skill in proficiency_list:
-                self.skill += self.prof_bonus
+                self.skills[skill] += self.prof_bonus
         for skill in SKILLS_WIS:
-            self.skill = self.wis_modifier
+            self.skills[skill] = self.wis_modifier
             if skill in proficiency_list:
-                self.skill += self.prof_bonus
+                self.skills[skill] += self.prof_bonus
         for skill in SKILLS_INTL:
-            self.skill = self.int_modifier
+            self.skills[skill] = self.intl_modifier
             if skill in proficiency_list:
-                self.skill += self.prof_bonus
+                self.skills[skill] += self.prof_bonus
         for skill in SKILLS_CHA:
-            self.skill = self.cha_modifier
+            self.skills[skill] = self.cha_modifier
             if skill in proficiency_list:
-                self.skill += self.prof_bonus
+                self.skills[skill] += self.prof_bonus
         for skill in SKILLS_STRG:
-            self.skill = self.strg_modifier
+            self.skills[skill] = self.strg_modifier
             if skill in proficiency_list:
-                self.skill += self.prof_bonus
-        
+                self.skills[skill] += self.prof_bonus
+
     def set_saving_profs(self, saving_profs_list):
-        self.save_strg = self.strg_modifier
-        self.save_dex = self.dex_modifier
-        self.save_con = self.con_modifier
-        self.save_intl = self.intl_modifier
-        self.save_wis = self.intl_modifier
-        self.save_cha = self.cha_modifier
+        self.save_strg = self.strg_modifier + int('strg' in saving_profs_list) * self.prof_bonus
+        self.save_dex = self.dex_modifier + int('dex' in saving_profs_list) * self.prof_bonus
+        self.save_con = self.con_modifier + int('con' in saving_profs_list) * self.prof_bonus
+        self.save_intl = self.intl_modifier + int('intl' in saving_profs_list) * self.prof_bonus
+        self.save_wis = self.intl_modifier + int('wis' in saving_profs_list) * self.prof_bonus
+        self.save_cha = self.cha_modifier + int('cha' in saving_profs_list) * self.prof_bonus
         
     def set_character_appearance(self, age, height, weight, eyes, complexion, hair):
         self.age = age
@@ -79,13 +81,33 @@ class Character:
     def set_backstory(self, backstory):
         self.backstory = backstory
 
-    def set_allies_and_organizations(self, description, name, logo):
+    def set_allies_and_organizations(self, description, name):
         self.aao_name = name
         self.aao_description = description
-        self.aao_logo = logo
     
     def set_additional_features_and_traits(self, description):
         self.aft = description
 
     def set_treasure(self, treasure):
         self.treasure = treasure
+
+class Wallet:
+    def __init__(self, lastnik):
+        self.lastnik = lastnik
+        self.stanje = 0
+
+    def posodobi_stanje(self, znesek):
+        self.stanje += znesek
+
+    #def zabeleži_transakcijo(self, znesek, namen, opombe):
+    #    #### DODAJ .JSON REŠITEV ####
+    #    pass
+
+#class Diary:
+#    def __init__(self, zaporedni, datum):
+#        self.zaporedni = zaporedni
+#        self.datum = datum
+#        self.vsebina = ''
+#
+#    def dodaj_vsebino(self, vsebina):
+#        self.vsebina += vsebina
