@@ -4,6 +4,22 @@ slovar_sposobnosti = {1: 'acrobatics', 2: 'animal_handling', 3: 'arcana', 4: 'at
 slovar_lastnosti = {1: 'strength', 2: 'dexterity', 3: 'constitution', 4: 'inteligence', 5: 'wisdom', 6: 'charisma'}
 space = ' '
 
+########### FUNKCIJE ZA PREVERJANJE VNOSOV ############
+def input_stevilo(text):
+    while True:
+        try:
+            stevilo = input(text)
+            return int(stevilo)
+        except ValueError:
+            print('Prosim, da vnesete število!')
+
+
+
+
+
+
+
+
 def izpis_junaka_osnova(hero):
     input(
         30 * '=' + '\n' +
@@ -53,9 +69,12 @@ def izpis_junaka_lastnosti(hero):
     return homescreen(hero)
 
 def izpis_junaka_sposobnosti(hero):
-    return izpis_junaka_osnova(hero)
-
-
+    print(30 * '=' + '\n')
+    for skill in hero.skills:
+        print(f'| {skill.capitalize()}{(15 - len(skill)) * space} | {hero.skills[skill]} |')
+    print(30 * '=' + '\n')
+    input('Za vrnitev na domač zaslon pritisni "enter"')
+    return homescreen(hero)
 
 def zagon():
     print('Pozdravljen v Dungeoneeru! Za začetek ustvarimo tvojega junaka.')
@@ -67,26 +86,28 @@ def zagon():
     background = input('Vnesi ozadje:\n> ')
     hero = model.Character(name, race, subrace, dclass, dsubclass, background)
     print(f'Super, {hero.name} je že na dobri poti.')
-    lvl = input(f'Kateri level je {hero.name}?\n> ')
-    hero.set_level(int(lvl))
+    lvl = input_stevilo(f'Kateri level je {hero.name}?\n> ')
+    hero.set_level(lvl)
     print('Sedaj vnesi junakove lastnosti (1-20).')
-    strg = input('Vnesi moč:\n> ')
-    dex = input('Vnesi hitrost:\n> ')
-    con = input('Vnesi telesno utrjenost:\n> ')
-    intl = input('Vnesi inteligenco:\n> ')
-    wis = input('Vnesi modrost:\n> ')
-    cha = input('vnesi karizmo:\n> ')
-    hero.set_ability_stats(int(strg), int(dex), int(con), int(intl), int(wis), int(cha))
+    strg = input_stevilo('Vnesi moč:\n> ')
+    dex = input_stevilo('Vnesi hitrost:\n> ')
+    con = input_stevilo('Vnesi telesno utrjenost:\n> ')
+    intl = input_stevilo('Vnesi inteligenco:\n> ')
+    wis = input_stevilo('Vnesi modrost:\n> ')
+    cha = input_stevilo('vnesi karizmo:\n> ')
+    hero.set_ability_stats(strg, dex, con, intl, wis, cha)
     print('V dani tabeli izberi številke ki pripadajo sposobnostim v katerih si vešč:')
     for x in range(1, 19):
         print(f'|{x}| {slovar_sposobnosti[x] + (18 - len(slovar_sposobnosti[x])) * space} |')
     ima_kaj_za_dodat = True
     sposob = set()
     while ima_kaj_za_dodat:
-        skill = int(input('Vnesi število:\n> '))
+        skill = input_stevilo('Vnesi število:\n> ')
+        if skill not in slovar_lastnosti.keys():
+            print('To pa ni na izbiro! Prosim poskusi ponovno.')
         sposob.add(slovar_sposobnosti[skill])
         inp = input('Imaš še kaj za dodat?\na) Da.\nb) Ne\n> ')
-        if 'a' in inp.lower() or 'd' in inp.lower() or 'y' in inp.lower:
+        if 'a' in inp.lower() or 'd' in inp.lower() or 'y' in inp.lower():
             continue
         else:
             ima_kaj_za_dodat = False
@@ -99,18 +120,21 @@ def zagon():
     ima_kaj_za_dodat = True
     last = set()
     while ima_kaj_za_dodat:
-        ability = int(input('Vnesi Število:\n> '))
+        ability = input_stevilo('Vnesi Število:\n> ')
+        if ability not in slovar_lastnosti.keys():
+            print('To pa ni na izbiro! Prosim poskusi ponovno.')
         last.add(slovar_lastnosti[ability])
         inp = input('Imaš še kaj za dodat?\na) Da.\nb) Ne\n> ')
-        if 'a' in inp.lower() or 'd' in inp.lower() or 'y' in inp.lower:
+        if 'a' in inp.lower() or 'd' in inp.lower() or 'y' in inp.lower():
             continue
         else:
             ima_kaj_za_dodat = False
             continue
-    print('Super, osnova tvojega junaka je dokončana!')
+    hero.set_saving_profs(last)
+    print(f'Super, {hero.name} je končan!')
     return homescreen(hero)
 
-
+zagon()
 
 
 
