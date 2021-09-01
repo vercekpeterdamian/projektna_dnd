@@ -1,3 +1,5 @@
+import json
+
 def modifier(xx):
     return xx // 2 - 5
 
@@ -89,42 +91,58 @@ class Character:
         self.height = height
         self.weight = weight
         self.eyes = eyes
-        self.coplexion = complexion
+        self.complexion = complexion
         self.hair = hair
 
-    def set_appearance_description(self, description):
-        self.appearance_description = description
+    def set_about(self, text):
+        self.about = text
 
-    def set_backstory(self, backstory):
-        self.backstory = backstory
+    def prepare_to_save(self):
+        return {
+                'character_basic': (self.name, self.race, self.subrace, self.dclass, self.dsubclass, self.background),
+                'level': self.lvl,
+                'abilities': (self.strg, self.dex, self.con, self.intl, self.wis, self.cha),
+                'skill_proficiencies': self.skill_prof_list,
+                'saving_proficiencies': self.saving_profs_list,
+                'character_appearance': (self.age, self.height, self.weight, self.eyes, self.complexion, self.hair)
+                }
 
-    def set_allies_and_organizations(self, description, name):
-        self.aao_name = name
-        self.aao_description = description
-    
-    def set_additional_features_and_traits(self, description):
-        self.aft = description
+    @classmethod
+    def load_character(cls, ch_slovar):
+        name, race, subrace, dclass, dsubclass, background = ch_slovar['character_basic']
+        character = Character(name, race, subrace, dclass, dsubclass, background)
+        character.build_character(ch_slovar)
+        return character
 
-    def set_treasure(self, treasure):
-        self.treasure = treasure
+    def build_character(self, ch_slovar):
+        self.set_level(ch_slovar['level'])
+        strg, dex, con, intl, wis, cha = ch_slovar['abilities']
+        self.set_ability_stats(strg, dex, con, intl, wis, cha)
+        self.set_skill_proficiencies(ch_slovar['skill_proficiencies'])
+        self.set_skills()
+        self.set_saving_proficiencies(ch_slovar['saving_proficiencies'])
+        self.set_saving()
+        age, height, weight, eyes, complexion, hair = ch_slovar['character_appearance']
+        self.set_character_appearance(age, height, weight, eyes, complexion, hair)
 
-class Wallet:
-    def __init__(self, lastnik):
-        self.lastnik = lastnik
-        self.stanje = 0
 
-    def posodobi_stanje(self, znesek):
-        self.stanje += znesek
+    def save_character(self, ime_datoteke):
+        with open(ime_datoteke, 'w') as datoteka:
+            json.dump(self.prepare_to_save(), datoteka, ensure_ascii=False, indent=4)
 
-    #def zabeleži_transakcijo(self, znesek, namen, opombe):
-    #    #### DODAJ .JSON REŠITEV ####
-    #    pass
+    @classmethod
+    def load_character_from_file(cls, ime_datoteke):
+        with open(ime_datoteke) as datoteka:
+            ch_slovar = json.load(datoteka)
+        return cls.load_character(ch_slovar)
 
-#class Diary:
-#    def __init__(self, zaporedni, datum):
-#        self.zaporedni = zaporedni
-#        self.datum = datum
-#        self.vsebina = ''
-#
-#    def dodaj_vsebino(self, vsebina):
-#        self.vsebina += vsebina
+class Diary:
+    def __init__(self, zaporedni, datum):
+        self.zaporedni = zaporedni
+        self.datum = datum
+        self.vsebina = ''
+
+    def spremeni_vsebino(self, zaporedni, datum, vsebina):
+        self.zaporedni = zaporedni
+        self.datum = datum
+        self.vsebina += vsebina 
