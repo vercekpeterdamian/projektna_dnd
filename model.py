@@ -19,6 +19,21 @@ class Character:
         self.dclass = dclass
         self.dsubclass = dsubclass
         self.background = background
+        self.diary = []
+        self.wallet = []
+
+    def add_diary(self, naslov, datum, vsebina):
+        self.diary.append((naslov, datum, vsebina))
+
+    def add_transaction(self, naslov, datum, znesek, opis=''):
+        self.wallet.append((naslov, datum, int(znesek), opis))
+        self.izracunaj_financno_stanje()
+
+    def izracunaj_financno_stanje(self):
+        skupaj = 0
+        for transakcija in self.wallet:
+            skupaj += transakcija[2]
+        self.financno_stanje = skupaj
 
     def set_level(self, lvl):
         self.lvl = lvl
@@ -99,30 +114,38 @@ class Character:
 
     def prepare_to_save(self):
         return {
+            'about': {
                 'character_basic': (self.name, self.race, self.subrace, self.dclass, self.dsubclass, self.background),
                 'level': self.lvl,
                 'abilities': (self.strg, self.dex, self.con, self.intl, self.wis, self.cha),
                 'skill_proficiencies': self.skill_prof_list,
                 'saving_proficiencies': self.saving_profs_list,
                 'character_appearance': (self.age, self.height, self.weight, self.eyes, self.complexion, self.hair)
-                }
+            },
+            'wallet': self.wallet,
+            'diary': self.diary
+        }
+                
+
 
     @classmethod
     def load_character(cls, ch_slovar):
-        name, race, subrace, dclass, dsubclass, background = ch_slovar['character_basic']
+        name, race, subrace, dclass, dsubclass, background = ch_slovar['about']['character_basic']
         character = Character(name, race, subrace, dclass, dsubclass, background)
-        character.build_character(ch_slovar)
+        character.build_character(ch_slovar['about'])
+        character.wallet = ch_slovar['wallet']
+        character.diary = ch_slovar['diary']
         return character
 
-    def build_character(self, ch_slovar):
-        self.set_level(ch_slovar['level'])
-        strg, dex, con, intl, wis, cha = ch_slovar['abilities']
+    def build_character(self, ch_slovar_about):
+        self.set_level(ch_slovar_about['level'])
+        strg, dex, con, intl, wis, cha = ch_slovar_about['abilities']
         self.set_ability_stats(strg, dex, con, intl, wis, cha)
-        self.set_skill_proficiencies(ch_slovar['skill_proficiencies'])
+        self.set_skill_proficiencies(ch_slovar_about['skill_proficiencies'])
         self.set_skills()
-        self.set_saving_proficiencies(ch_slovar['saving_proficiencies'])
+        self.set_saving_proficiencies(ch_slovar_about['saving_proficiencies'])
         self.set_saving()
-        age, height, weight, eyes, complexion, hair = ch_slovar['character_appearance']
+        age, height, weight, eyes, complexion, hair = ch_slovar_about['character_appearance']
         self.set_character_appearance(age, height, weight, eyes, complexion, hair)
 
 
@@ -135,14 +158,3 @@ class Character:
         with open(ime_datoteke) as datoteka:
             ch_slovar = json.load(datoteka)
         return cls.load_character(ch_slovar)
-
-class Diary:
-    def __init__(self, zaporedni, datum):
-        self.zaporedni = zaporedni
-        self.datum = datum
-        self.vsebina = ''
-
-    def spremeni_vsebino(self, zaporedni, datum, vsebina):
-        self.zaporedni = zaporedni
-        self.datum = datum
-        self.vsebina += vsebina 
