@@ -25,7 +25,7 @@ class Uporabnik:
         uporabnik = Uporabnik.iz_datoteke(uporabnisko_ime)
         if uporabnik is None:
             raise ValueError('This user does not exist')
-        elif uporabnik.prevri_geslo(geslo_v_cistopisu):
+        elif uporabnik.preveri_geslo(geslo_v_cistopisu):
             return uporabnik
         else:
             raise ValueError('The password is incorrect')
@@ -56,9 +56,7 @@ class Uporabnik:
         }
 
     def v_datoteko(self):
-        with open(
-            Uporabnik.ime_uporabnikove_datoteke(self.uporabnisko_ime), 'w'
-        ) as datoteka:
+        with open(Uporabnik.ime_uporabnikove_datoteke(self.uporabnisko_ime), 'w') as datoteka:
             json.dump(self.v_slovar(), datoteka, ensure_ascii=False, indent=4)
 
     def preveri_geslo(self, geslo_v_cistopisu):
@@ -94,6 +92,11 @@ class Character:
         self.dclass = dclass
         self.dsubclass = dsubclass
         self.background = background
+        self.abilities_are = False
+        self.lvl = 0
+        self.saving_profs_list = False
+        self.skill_prof_list = False
+        self.appearance_is = False
         self.diary = []
         self.wallet = []
 
@@ -127,6 +130,7 @@ class Character:
         self.wis_modifier = modifier(wis)
         self.cha = cha
         self.cha_modifier = modifier(cha)
+        self.abilities_are = True
 
     def set_skill_proficiencies(self, proficiency_list):
         self.skill_prof_list = proficiency_list
@@ -183,11 +187,16 @@ class Character:
         self.eyes = eyes
         self.complexion = complexion
         self.hair = hair
+        self.appearance_is = True
 
     def set_about(self, text):
         self.about = text
 
     def prepare_to_save(self):
+        if not self.abilities_are:
+            self.set_ability_stats(0, 0, 0, 0, 0, 0)
+        if not self.appearance_is:
+            self.set_character_appearance('', '', '', '', '', '', '')
         return {
             'about': {
                 'character_basic': (self.name, self.race, self.subrace, self.dclass, self.dsubclass, self.background),
