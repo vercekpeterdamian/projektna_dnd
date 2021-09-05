@@ -78,7 +78,13 @@ def odjava():
 @bottle.get('/character/')
 def character_homepage():
     uporabnik = trenutni_uporabnik()
-    return bottle.template('character.tpl')
+    return bottle.template('character.tpl', character=uporabnik.character, uporabnik=uporabnik)
 
+@bottle.get('/create-character/')
+def create_character_get():
+    return bottle.template('create-character.tpl')
+
+@bottle.post('/create-character/')
+def create_character_post():
 
 bottle.run(debug=True, reloader=True)

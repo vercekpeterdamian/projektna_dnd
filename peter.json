@@ -1,0 +1,37 @@
+{
+    "uporabnisko_ime": "peter",
+    "zasifrirano_geslo": "2752021294$08abee62059c07357b416f11b26d338b23bb552815a613dc215e8c162b91a179be2fb0e169e6484f3aa40ae8351b014e2b4502c506216a980b8f5216ef563ea3",
+    "character": {
+        "about": {
+            "character_basic": [
+                "",
+                "",
+                "",
+                "",
+                "",
+                ""
+            ],
+            "level": 0,
+            "abilities": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
+            "skill_proficiencies": [],
+            "saving_proficiencies": [],
+            "character_appearance": [
+                "",
+                "",
+                "",
+                "",
+                "",
+                ""
+            ]
+        },
+        "wallet": [],
+        "diary": []
+    }
+}

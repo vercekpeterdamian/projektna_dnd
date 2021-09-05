@@ -6,6 +6,7 @@ def modifier(xx):
     return xx // 2 - 5
 
 ABILITIES = ['strg', 'dex', 'con', 'intl', 'wis', 'cha']
+ABILITIES_IN_ORDER = ['Strength', 'Dexterity', 'Consstitution', 'Inteligence', 'Wisdom', 'Charisma']
 SKILLS = ['acrobatics', 'animal_handling', 'arcana', 'atheltics', 'deception', 'history', 'insight', 'intimidation', 'investigation', 'medicine', 'nature', 'perception', 'performance', 'persuasion', 'religion', 'sleight_of_hand', 'stealth', 'survival']
 SKILLS_DEX = ['acrobatics', 'sleight_of_hand', 'stealth']
 SKILLS_WIS = ['animal_handling', 'insight', 'medicine', 'perception', 'survival']
@@ -52,7 +53,7 @@ class Uporabnik:
         return {
             'uporabnisko_ime': self.uporabnisko_ime,
             'zasifrirano_geslo': self.zasifrirano_geslo,
-            'character': self.character.prepare_to_save(),
+            'character': self.character.prepare_to_save()
         }
 
     def v_datoteko(self):
@@ -94,8 +95,8 @@ class Character:
         self.background = background
         self.abilities_are = False
         self.lvl = 0
-        self.saving_profs_list = False
-        self.skill_prof_list = False
+        self.saving_profs_list = []
+        self.skill_prof_list = []
         self.appearance_is = False
         self.diary = []
         self.wallet = []
@@ -196,15 +197,15 @@ class Character:
         if not self.abilities_are:
             self.set_ability_stats(0, 0, 0, 0, 0, 0)
         if not self.appearance_is:
-            self.set_character_appearance('', '', '', '', '', '', '')
+            self.set_character_appearance('', '', '', '', '', '')
         return {
             'about': {
-                'character_basic': (self.name, self.race, self.subrace, self.dclass, self.dsubclass, self.background),
+                'character_basic': [self.name, self.race, self.subrace, self.dclass, self.dsubclass, self.background],
                 'level': self.lvl,
-                'abilities': (self.strg, self.dex, self.con, self.intl, self.wis, self.cha),
+                'abilities': [self.strg, self.dex, self.con, self.intl, self.wis, self.cha],
                 'skill_proficiencies': self.skill_prof_list,
                 'saving_proficiencies': self.saving_profs_list,
-                'character_appearance': (self.age, self.height, self.weight, self.eyes, self.complexion, self.hair)
+                'character_appearance': [self.age, self.height, self.weight, self.eyes, self.complexion, self.hair]
             },
             'wallet': self.wallet,
             'diary': self.diary

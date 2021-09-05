@@ -1,0 +1,37 @@
+{
+    "uporabnisko_ime": "matic",
+    "zasifrirano_geslo": "2131889453$b65ccb3cd41c2c2aaeb0c9fda0bc119be6ad0743813ff8c122ebd1fbb76185dd3fa62ace78c6644fd1f9e874550e7fe133e9da3b38b163c06b14bb2d61fa8471",
+    "character": {
+        "about": {
+            "character_basic": [
+                "",
+                "",
+                "",
+                "",
+                "",
+                ""
+            ],
+            "level": 0,
+            "abilities": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
+            "skill_proficiencies": [],
+            "saving_proficiencies": [],
+            "character_appearance": [
+                "",
+                "",
+                "",
+                "",
+                "",
+                ""
+            ]
+        },
+        "wallet": [],
+        "diary": []
+    }
+}
