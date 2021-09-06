@@ -13,138 +13,142 @@
 </a>
 % else:
 <div>
-    <h1>
-        Your character's sheet.
-    </h1>
     <div>
+        <div class='levo'>
+            <h1>
+                Your character's sheet.
+            </h1>
         <div>
-            <h2>About</h2>
+        <div class='levo'>
+            <div>
+                <h2>About</h2>
+            </div>
+            <div>
+                <table border="1">
+                    <tr>
+                        <td>
+                            Name
+                        </td>
+                        <td>
+                            {{character.name}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Race
+                        </td>
+                        <td>
+                            {{character.race}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Subrace
+                        </td>
+                        <td>
+                            {{character.subrace}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Class
+                        </td>
+                        <td>
+                            {{character.dclass}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Subclass
+                        </td>
+                        <td>
+                            {{character.dsubclass}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Background
+                        </td>
+                        <td>
+                            {{character.background}}
+                        </td>
+                    </tr>
+                </table>
+            </div>
         </div>
-        <div>
-            <table border="1">
-                <tr>
-                    <td>
-                        Name
-                    </td>
-                    <td>
-                        {{character.name}}
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Race
-                    </td>
-                    <td>
-                        {{character.race}}
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Subrace
-                    </td>
-                    <td>
-                        {{character.subrace}}
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Class
-                    </td>
-                    <td>
-                        {{character.dclass}}
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Subclass
-                    </td>
-                    <td>
-                        {{character.dsubclass}}
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Background
-                    </td>
-                    <td>
-                        {{character.background}}
-                    </td>
-                </tr>
-            </table>
+        <div class='levo'>
+            <div>
+                <h2>
+                    Abilities
+                </h2>
+            </div>
+            <div>
+                <table border="1">
+                    <tr>
+                        <td>
+                            Ability
+                        </td>
+                        <td>
+
+                        </td>
+                        <td>
+                            Ability mod
+                        </td>
+                        <td>
+                            Saving mods
+                        </td>
+                    </tr>
+                    % for x in range(6):
+                    <tr>
+                        <td>
+                            {{ABILITIES_SLOVAR[x][1]}}
+                        </td>
+                        <td>
+                            {{character.abilities[ABILITIES_SLOVAR[x][0]]}}
+                        </td>
+                        <td>
+                            {{character.abilities_mods[ABILITIES_SLOVAR[x][0]]}}
+                        </td>
+                        <td>
+                            {{character.saving_mods[ABILITIES_SLOVAR[x][0]]}}
+                        </td>
+                    </tr>
+                    % end
+                </table>
+            </div>
         </div>
-    </div>
-    <div>
-        <div>
-            <h2>
-                Abilities
-            </h2>
-        </div>
-        <div>
-            <table border="1">
-                <tr>
-                    <td>
-                        Ability
-                    </td>
-                    <td>
-                        
-                    </td>
-                    <td>
-                        Ability mod
-                    </td>
-                    <td>
-                        Saving mods
-                    </td>
-                </tr>
-                % for x in range(6):
-                <tr>
-                    <td>
-                        {{ABILITIES_SLOVAR[x][1]}}
-                    </td>
-                    <td>
-                        {{character.abilities[ABILITIES_SLOVAR[x][0]]}}
-                    </td>
-                    <td>
-                        {{character.abilities_mods[ABILITIES_SLOVAR[x][0]]}}
-                    </td>
-                    <td>
-                        {{character.saving_mods[ABILITIES_SLOVAR[x][0]]}}
-                    </td>
-                </tr>
-                % end
-            </table>
-        </div>
-    </div>
-    <div>
-        <div>
-            <h2>
-                Skills
-            </h2>
-        </div>
-        <div>
-            <table border="1">
-                <tr>
-                    <td>
-                        Skill
-                    </td>
-                    <td>
-                        Skill modifier
-                    </td>
-                </tr>
-                % for x in range(18):
-                <tr>
-                    <td>
-                        {{SKILLS_SLOVAR[x][1]}}
-                    </td>
-                    <td>
-                        {{character.skills[SKILLS_SLOVAR[x][0]]}}
-                    </td>
-                </tr>
-                % end
-            </table>
+        <div class='desno'>
+            <div>
+                <h2>
+                    Skills
+                </h2>
+            </div>
+            <div>
+                <table border="1">
+                    <tr>
+                        <td>
+                            Skill
+                        </td>
+                        <td>
+                            Skill modifier
+                        </td>
+                    </tr>
+                    % for x in range(18):
+                    <tr>
+                        <td>
+                            {{SKILLS_SLOVAR[x][1]}}
+                        </td>
+                        <td>
+                            {{character.skills[SKILLS_SLOVAR[x][0]]}}
+                        </td>
+                    </tr>
+                    % end
+                </table>
+            </div>
         </div>
     </div>
 </div>
-<div>
+<divc class='levo'>
     <div>
         <h1>
             Wallet
@@ -174,11 +178,11 @@
         </div>
         <div>
             % for wallet_entry in character.wallet[::-1]:
-                <div>
-                    {{wallet_entry[0]}} DATE: {{wallet_entry[1]}} AMOUNT: {{wallet_entry[2]}}
+                <div class='entry_title'>
+                    {{wallet_entry[0]}}     DATE: {{wallet_entry[1]}}     AMOUNT: {{wallet_entry[2]}}
                 </div>
                 % if not wallet_entry == '':
-                    <div>
+                    <div class='entry_content'>
                         {{wallet_entry[3]}}
                     </div><br>
                 % else:
@@ -188,7 +192,7 @@
         </div>
     </div>
 </div>
-<div>
+<div class='desno'>
     <div>
         <h1>
             Diary
@@ -213,11 +217,11 @@
         </div>
         <div>
             % for diary_entry in character.diary[::-1]:
-                <div>
-                    {{diary_entry[0]}} DATE: {{diary_entry[1]}}
+                <div class='entry_title'>
+                    {{diary_entry[0]}}     DATE: {{diary_entry[1]}}
                 </div>
                 % if not diary_entry == '':
-                    <div>
+                    <div class='entry_content'>
                         {{diary_entry[2]}}
                     </div><br>
                 % else:

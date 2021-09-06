@@ -1,6 +1,6 @@
 {
     "uporabnisko_ime": "peter",
-    "zasifrirano_geslo": "1603654131$d39337443a36526b807fc51b15ac65313a608f274e30a2ec3c221b25e5a57c53f07c989f8128d44370f01288fc447cf7df23a4df7b5a847aa4c8d9bae4076aaa",
+    "zasifrirano_geslo": "637002655$6484761a2233b96a782cd03f2a035ea3555c36f60fb78381db8be9d61563b1439bef59361db8a26c17f3bb384eae7261970c1117e12db934e375adcc1849ed27",
     "character": {
         "about": {
             "character_basic": [
@@ -39,31 +39,7 @@
                 ""
             ]
         },
-        "wallet": [
-            [
-                "first entry",
-                "2021-09-06",
-                100,
-                "deluje?"
-            ],
-            [
-                "second entry",
-                "2021-09-06",
-                -50,
-                "deluje??"
-            ]
-        ],
-        "diary": [
-            [
-                "day one",
-                "2021-09-06",
-                null
-            ],
-            [
-                "prosim delaj",
-                "2021-09-06",
-                "moralo bi delovati"
-            ]
-        ]
+        "wallet": [],
+        "diary": []
     }
 }
