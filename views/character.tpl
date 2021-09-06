@@ -174,13 +174,55 @@
         </div>
         <div>
             % for wallet_entry in character.wallet[::-1]:
-            <button class='accordion'>{{wallet_entry[0]}} date: {{wallet_entry[1]}} amount: {{wallet_entry[2]}}</button>
-            % if not wallet_entry == '':
-            <div class='panel'>
-                {{wallet_entry[3]}}
-            </div><br>
-            % else:
-            <br>
+                <div>
+                    {{wallet_entry[0]}} DATE: {{wallet_entry[1]}} AMOUNT: {{wallet_entry[2]}}
+                </div>
+                % if not wallet_entry == '':
+                    <div>
+                        {{wallet_entry[3]}}
+                    </div><br>
+                % else:
+                    <br>
+                % end
+            % end
+        </div>
+    </div>
+</div>
+<div>
+    <div>
+        <h1>
+            Diary
+        </h1>
+    </div>
+    <div>
+        <div>
+            <h2>
+                New diary entry
+            </h2>
+        </div>
+        <div>
+            <form action='/diary-entry/' method='POST'>
+                <label>Title:</label>
+                <input name='naslov' type='text'><br>
+                <label>Content</label><br>
+                <textarea name='vsebina' rows='3', cols='50'></textarea><br><br>
+                <button>
+                    Make an entry!
+                </button>
+            </form>
+        </div>
+        <div>
+            % for diary_entry in character.diary[::-1]:
+                <div>
+                    {{diary_entry[0]}} DATE: {{diary_entry[1]}}
+                </div>
+                % if not diary_entry == '':
+                    <div>
+                        {{diary_entry[2]}}
+                    </div><br>
+                % else:
+                    <br>
+                % end
             % end
         </div>
     </div>

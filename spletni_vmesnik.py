@@ -123,6 +123,7 @@ def create_character_post():
     shrani_stanje(uporabnik)
     bottle.redirect('/')
 
+
 @bottle.post('/wallet-entry/')
 def wallet_entry_post():
     uporabnik = trenutni_uporabnik()
@@ -131,6 +132,17 @@ def wallet_entry_post():
     znesek = bottle.request.forms.getunicode('znesek')
     opis = bottle.request.forms.get('opis', '')
     uporabnik.character.add_transaction(naslov, datum, znesek, opis)
+    shrani_stanje(uporabnik)
+    bottle.redirect('/')
+
+
+@bottle.post('/diary-entry/')
+def diary_entry_post():
+    uporabnik = trenutni_uporabnik()
+    naslov = bottle.request.forms.getunicode('naslov')
+    datum = date.today().strftime('%Y-%m-%d')
+    vsebina = bottle.request.forms.getunicode('vsebina')
+    uporabnik.character.add_diary(naslov, datum, vsebina)
     shrani_stanje(uporabnik)
     bottle.redirect('/')
 
