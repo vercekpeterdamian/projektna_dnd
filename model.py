@@ -118,18 +118,20 @@ class Character:
         self.prof_bonus = (lvl - 1) // 4 + 2
 
     def set_ability_stats(self, strg, dex, con, intl, wis, cha):
-        self.strg = strg
-        self.strg_modifier = modifier(strg)
-        self.dex = dex
-        self.dex_modifier = modifier(dex)
-        self.con = con
-        self.con_modifier = modifier(con)
-        self.intl = intl
-        self.intl_modifier = modifier(intl)
-        self.wis = wis
-        self.wis_modifier = modifier(wis)
-        self.cha = cha
-        self.cha_modifier = modifier(cha)
+        self.abilities = {}
+        self.abilities_mods = {}
+        self.abilities['strg'] = strg
+        self.abilities_mods['strg'] = modifier(strg)
+        self.abilities['dex'] = dex
+        self.abilities_mods['dex'] = modifier(dex)
+        self.abilities['con'] = con
+        self.abilities_mods['con'] = modifier(con)
+        self.abilities['intl'] = intl
+        self.abilities_mods['intl'] = modifier(intl)
+        self.abilities['wis'] = wis
+        self.abilities_mods['wis'] = modifier(wis)
+        self.abilities['cha'] = cha
+        self.abilities_mods['cha'] = modifier(cha)
         self.abilities_are = True
 
     def set_skill_proficiencies(self, proficiency_list):
@@ -138,23 +140,23 @@ class Character:
     def set_skills(self):
         self.skills = {}
         for skill in SKILLS_DEX:
-            self.skills[skill] = self.dex_modifier
+            self.skills[skill] = self.abilities_mods['dex']
             if skill in self.skill_prof_list:
                 self.skills[skill] += self.prof_bonus
         for skill in SKILLS_WIS:
-            self.skills[skill] = self.wis_modifier
+            self.skills[skill] = self.abilities_mods['wis']
             if skill in self.skill_prof_list:
                 self.skills[skill] += self.prof_bonus
         for skill in SKILLS_INTL:
-            self.skills[skill] = self.intl_modifier
+            self.skills[skill] = self.abilities_mods['intl']
             if skill in self.skill_prof_list:
                 self.skills[skill] += self.prof_bonus
         for skill in SKILLS_CHA:
-            self.skills[skill] = self.cha_modifier
+            self.skills[skill] = self.abilities_mods['cha']
             if skill in self.skill_prof_list:
                 self.skills[skill] += self.prof_bonus
         for skill in SKILLS_STRG:
-            self.skills[skill] = self.strg_modifier
+            self.skills[skill] = self.abilities_mods['strg']
             if skill in self.skill_prof_list:
                 self.skills[skill] += self.prof_bonus
 
@@ -162,12 +164,13 @@ class Character:
         self.saving_profs_list = save_proficiencies_list
 
     def set_saving(self):
-        self.save_strg = self.strg_modifier + int('strg' in self.saving_profs_list) * self.prof_bonus
-        self.save_dex = self.dex_modifier + int('dex' in self.saving_profs_list) * self.prof_bonus
-        self.save_con = self.con_modifier + int('con' in self.saving_profs_list) * self.prof_bonus
-        self.save_intl = self.intl_modifier + int('intl' in self.saving_profs_list) * self.prof_bonus
-        self.save_wis = self.intl_modifier + int('wis' in self.saving_profs_list) * self.prof_bonus
-        self.save_cha = self.cha_modifier + int('cha' in self.saving_profs_list) * self.prof_bonus
+        self.saving_mods = {}
+        self.saving_mods['strg'] = self.abilities_mods['strg'] + int('strg' in self.saving_profs_list) * self.prof_bonus
+        self.saving_mods['dex'] = self.abilities_mods['dex'] + int('dex' in self.saving_profs_list) * self.prof_bonus
+        self.saving_mods['con'] = self.abilities_mods['con'] + int('con' in self.saving_profs_list) * self.prof_bonus
+        self.saving_mods['intl'] = self.abilities_mods['intl'] + int('intl' in self.saving_profs_list) * self.prof_bonus
+        self.saving_mods['wis'] = self.abilities_mods['wis'] + int('wis' in self.saving_profs_list) * self.prof_bonus
+        self.saving_mods['cha'] = self.abilities_mods['cha'] + int('cha' in self.saving_profs_list) * self.prof_bonus
 
     def change_level(self, lvl):
         self.lvl = lvl
@@ -201,7 +204,7 @@ class Character:
             'about': {
                 'character_basic': [self.name, self.race, self.subrace, self.dclass, self.dsubclass, self.background],
                 'level': self.lvl,
-                'abilities': [self.strg, self.dex, self.con, self.intl, self.wis, self.cha],
+                'abilities': [self.abilities['strg'], self.abilities['dex'], self.abilities['con'], self.abilities['intl'], self.abilities['wis'], self.abilities['cha']],
                 'skill_proficiencies': self.skill_prof_list,
                 'saving_proficiencies': self.saving_profs_list,
                 'character_appearance': [self.age, self.height, self.weight, self.eyes, self.complexion, self.hair]
@@ -218,6 +221,7 @@ class Character:
         character = Character(name, race, subrace, dclass, dsubclass, background)
         character.build_character(ch_slovar['about'])
         character.wallet = ch_slovar['wallet']
+        character.izracunaj_financno_stanje()
         character.diary = ch_slovar['diary']
         return character
 

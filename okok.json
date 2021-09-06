@@ -1,0 +1,37 @@
+{
+    "uporabnisko_ime": "okok",
+    "zasifrirano_geslo": "1937254924$57f60ab9b3ad54e05e04cac8f24ed2c7699b43518c5822b47b22547a5454b072959a374a5659636b457f4989536f898a34cc8ef5aefd6a065690137d823d9fb1",
+    "character": {
+        "about": {
+            "character_basic": [
+                "",
+                "",
+                "",
+                "",
+                "",
+                ""
+            ],
+            "level": 1,
+            "abilities": [
+                "10",
+                "10",
+                "10",
+                "10",
+                "10",
+                "10"
+            ],
+            "skill_proficiencies": [],
+            "saving_proficiencies": [],
+            "character_appearance": [
+                "",
+                "",
+                "",
+                "",
+                "",
+                ""
+            ]
+        },
+        "wallet": [],
+        "diary": []
+    }
+}

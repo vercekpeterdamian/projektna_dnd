@@ -5,7 +5,7 @@ from datetime import date
 PISKOTEK_UPORABNISKO_IME = 'User_cookies'
 SKRIVNOST = 'moja macka Mufi'
 SKILLS_SLOVAR = {0: ('acrobatics', 'Acrobatics'), 1: ('animal_handling', 'Animal handling'), 2: ('arcana', 'Arcana'), 3: ('athletics', 'Athletics'), 4: ('deception', 'Deception'), 5: ('history', 'History'), 6: ('insight', 'Insight'), 7: ('intimidation', 'Intimidation'), 8: ('investigation', 'Investigation'), 9: ('medicine', 'Medicine'), 10: ('nature', 'Nature'), 11: ('perception', 'Perception'), 12: ('performance', 'Performance'), 13: ('persuasion', 'Persuasion'), 14: ('religion', 'Religion'), 15: ('sleight_of_hand', 'Sleight of hand'), 16: ('stealth', 'Stealth'), 17: ('survival', 'Survival')}
-ABILITIES = ['strg', 'dex', 'con', 'intl', 'wis', 'cha']
+ABILITIES_SLOVAR = {0: ('strg', 'Strength'), 1: ('dex', 'Dexterity'), 2: ('con', 'Constitution'), 3: ('intl', 'Intelligent'), 4: ('wis', 'Wisdom'), 5: ('cha', 'Charisma')}
 
 def shrani_stanje(uporabnik):
     uporabnik.v_datoteko()
@@ -80,7 +80,7 @@ def odjava():
 @bottle.get('/character/')
 def character_homepage():
     uporabnik = trenutni_uporabnik()
-    return bottle.template('character.tpl', character=uporabnik.character, uporabnik=uporabnik)
+    return bottle.template('character.tpl', character=uporabnik.character, uporabnik=uporabnik, ABILITIES_SLOVAR=ABILITIES_SLOVAR, SKILLS_SLOVAR=SKILLS_SLOVAR)
 
 @bottle.get('/create-character/')
 def create_character_get():
@@ -111,9 +111,9 @@ def create_character_post():
     cha = bottle.request.forms['charisma']
     uporabnik.character.set_ability_stats(strg, dex, con, intl, wis, cha)
     saving_profs = []
-    for x in ABILITIES:
-        if x in bottle.request.forms.keys():
-            saving_profs.append(x)
+    for x in range(6):
+        if ABILITIES_SLOVAR[x][0] in bottle.request.forms.keys():
+            saving_profs.append(ABILITIES_SLOVAR[x][0])
     uporabnik.character.set_saving_proficiencies(saving_profs)
     skill_profs = []
     for x in range(18):
@@ -122,5 +122,17 @@ def create_character_post():
     uporabnik.character.set_skill_proficiencies(skill_profs)
     shrani_stanje(uporabnik)
     bottle.redirect('/')
+
+@bottle.post('/wallet-entry/')
+def wallet_entry_post():
+    uporabnik = trenutni_uporabnik()
+    naslov = bottle.request.forms.getunicode('naslov')
+    datum = date.today().strftime("%Y-%m-%d")
+    znesek = bottle.request.forms.getunicode('znesek')
+    opis = bottle.request.forms.get('opis', '')
+    uporabnik.character.add_transaction(naslov, datum, znesek, opis)
+    shrani_stanje(uporabnik)
+    bottle.redirect('/')
+
 
 bottle.run(debug=True, reloader=True)
