@@ -6,11 +6,11 @@
     This is my first edition so I'm not the most capable, but I'd love to help you in your campaign.
     Before we even go any further you need to create your character!
 </p>
-<a href='/create_character/'>
+<a href='/create-character/'>
     <button>
         Create your character
     </button>
 </a>
 % else:
-<h1>AAAAAAAAAAAAAAAAAAAAA</h1>
+<h1>Maybu it work'd</h1>
 % end

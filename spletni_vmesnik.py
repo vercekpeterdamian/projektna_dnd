@@ -1,9 +1,11 @@
 import bottle
-from model import Uporabnik
+from model import SKILLS, Uporabnik
 from datetime import date
 
 PISKOTEK_UPORABNISKO_IME = 'User_cookies'
 SKRIVNOST = 'moja macka Mufi'
+SKILLS_SLOVAR = {0: ('acrobatics', 'Acrobatics'), 1: ('animal_handling', 'Animal handling'), 2: ('arcana', 'Arcana'), 3: ('athletics', 'Athletics'), 4: ('deception', 'Deception'), 5: ('history', 'History'), 6: ('insight', 'Insight'), 7: ('intimidation', 'Intimidation'), 8: ('investigation', 'Investigation'), 9: ('medicine', 'Medicine'), 10: ('nature', 'Nature'), 11: ('perception', 'Perception'), 12: ('performance', 'Performance'), 13: ('persuasion', 'Persuasion'), 14: ('religion', 'Religion'), 15: ('sleight_of_hand', 'Sleight of hand'), 16: ('stealth', 'Stealth'), 17: ('survival', 'Survival')}
+ABILITIES = ['strg', 'dex', 'con', 'intl', 'wis', 'cha']
 
 def shrani_stanje(uporabnik):
     uporabnik.v_datoteko()
@@ -82,9 +84,43 @@ def character_homepage():
 
 @bottle.get('/create-character/')
 def create_character_get():
-    return bottle.template('create-character.tpl')
+    return bottle.template('create-character.tpl', SKILLS_SLOVAR = SKILLS_SLOVAR)
 
 @bottle.post('/create-character/')
 def create_character_post():
+    uporabnik = trenutni_uporabnik()
+    ch_name = bottle.request.forms.getunicode('ch_name')
+    uporabnik.character.name = ch_name
+    ch_race = bottle.request.forms.getunicode('ch_race')
+    uporabnik.character.race = ch_race
+    ch_subrace = bottle.request.forms.getunicode('ch_subrace')
+    uporabnik.character.subrace = ch_subrace
+    ch_class = bottle.request.forms.getunicode('ch_class')
+    uporabnik.character.dclass = ch_class
+    ch_subclass = bottle.request.forms.getunicode('ch_subclass')
+    uporabnik.character.dsubclass = ch_subclass
+    ch_background = bottle.request.forms.getunicode('ch_background')
+    uporabnik.character.background = ch_background
+    lvl = bottle.request.forms['level']
+    uporabnik.character.set_level(int(lvl))
+    strg = bottle.request.forms['strength']
+    dex = bottle.request.forms['dexterity']
+    con = bottle.request.forms['constituion']
+    intl = bottle.request.forms['inteligence']
+    wis = bottle.request.forms['wisdom']
+    cha = bottle.request.forms['charisma']
+    uporabnik.character.set_ability_stats(strg, dex, con, intl, wis, cha)
+    saving_profs = []
+    for x in ABILITIES:
+        if x in bottle.request.forms.keys():
+            saving_profs.append(x)
+    uporabnik.character.set_saving_proficiencies(saving_profs)
+    skill_profs = []
+    for x in range(18):
+        if SKILLS_SLOVAR[x][0] in bottle.request.forms.keys():
+            skill_profs.append(SKILLS_SLOVAR[x][0])
+    uporabnik.character.set_skill_proficiencies(skill_profs)
+    shrani_stanje(uporabnik)
+    bottle.redirect('/')
 
 bottle.run(debug=True, reloader=True)

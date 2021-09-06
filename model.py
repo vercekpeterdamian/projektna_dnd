@@ -3,10 +3,9 @@ import hashlib
 import random
 
 def modifier(xx):
-    return xx // 2 - 5
+    return int(xx) // 2 - 5
 
 ABILITIES = ['strg', 'dex', 'con', 'intl', 'wis', 'cha']
-ABILITIES_IN_ORDER = ['Strength', 'Dexterity', 'Consstitution', 'Inteligence', 'Wisdom', 'Charisma']
 SKILLS = ['acrobatics', 'animal_handling', 'arcana', 'atheltics', 'deception', 'history', 'insight', 'intimidation', 'investigation', 'medicine', 'nature', 'perception', 'performance', 'persuasion', 'religion', 'sleight_of_hand', 'stealth', 'survival']
 SKILLS_DEX = ['acrobatics', 'sleight_of_hand', 'stealth']
 SKILLS_WIS = ['animal_handling', 'insight', 'medicine', 'perception', 'survival']
