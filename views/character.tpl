@@ -1,27 +1,26 @@
 % rebase('osnova.tpl')
-% if character.name == '':
+% if uporabnik.nov_uporabnik:
 <h1>Welcome {{uporabnik.uporabnisko_ime}}!</h1>
 <p>
     I'm Dungeoneer, your personal D&D character manager! 
     This is my first edition so I'm not the most capable, but I'd love to help you in your campaign.
-    Before we even go any further you need to create your character!
+    Before we go any further you need to create your character!
 </p>
-<a href='/create-character/'>
-    <button>
-        Create your character
-    </button>
+<a href='/create-character/about/'>
+    <input type='submit' value='Create your character'>
 </a>
 % else:
 <div>
     <div>
-        <div class='levo'>
+        <div>
             <h1>
                 Your character's sheet.
             </h1>
         <div>
-        <div class='levo'>
+        <div>
             <div>
-                <h2>About</h2>
+                <h2>About</h2><br>
+                <a href='/create-character/about/'><button>Edit</button></a>
             </div>
             <div>
                 <table border="1">
@@ -76,11 +75,12 @@
                 </table>
             </div>
         </div>
-        <div class='levo'>
+        <div>
             <div>
                 <h2>
                     Abilities
-                </h2>
+                </h2><br>
+                <a href='/create-character/abilities/'><button>Edit</button></a>
             </div>
             <div>
                 <table border="1">
@@ -121,7 +121,8 @@
             <div>
                 <h2>
                     Skills
-                </h2>
+                </h2><br>
+                <a href='/create-character/skills/'><button>Edit</button></a>
             </div>
             <div>
                 <table border="1">
@@ -148,7 +149,7 @@
         </div>
     </div>
 </div>
-<divc class='levo'>
+<div>
     <div>
         <h1>
             Wallet
@@ -192,7 +193,7 @@
         </div>
     </div>
 </div>
-<div class='desno'>
+<div>
     <div>
         <h1>
             Diary

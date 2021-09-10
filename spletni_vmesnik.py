@@ -7,6 +7,7 @@ SKRIVNOST = 'moja macka Mufi'
 SKILLS_SLOVAR = {0: ('acrobatics', 'Acrobatics'), 1: ('animal_handling', 'Animal handling'), 2: ('arcana', 'Arcana'), 3: ('athletics', 'Athletics'), 4: ('deception', 'Deception'), 5: ('history', 'History'), 6: ('insight', 'Insight'), 7: ('intimidation', 'Intimidation'), 8: ('investigation', 'Investigation'), 9: ('medicine', 'Medicine'), 10: ('nature', 'Nature'), 11: ('perception', 'Perception'), 12: ('performance', 'Performance'), 13: ('persuasion', 'Persuasion'), 14: ('religion', 'Religion'), 15: ('sleight_of_hand', 'Sleight of hand'), 16: ('stealth', 'Stealth'), 17: ('survival', 'Survival')}
 ABILITIES_SLOVAR = {0: ('strg', 'Strength'), 1: ('dex', 'Dexterity'), 2: ('con', 'Constitution'), 3: ('intl', 'Intelligent'), 4: ('wis', 'Wisdom'), 5: ('cha', 'Charisma')}
 
+
 def shrani_stanje(uporabnik):
     uporabnik.v_datoteko()
 
@@ -77,17 +78,26 @@ def odjava():
     bottle.response.delete_cookie(PISKOTEK_UPORABNISKO_IME, path='/')
     bottle.redirect('/')
 
+
 @bottle.get('/character/')
 def character_homepage():
     uporabnik = trenutni_uporabnik()
     return bottle.template('character.tpl', character=uporabnik.character, uporabnik=uporabnik, ABILITIES_SLOVAR=ABILITIES_SLOVAR, SKILLS_SLOVAR=SKILLS_SLOVAR)
 
+
 @bottle.get('/create-character/')
 def create_character_get():
     return bottle.template('create-character.tpl', SKILLS_SLOVAR = SKILLS_SLOVAR)
 
-@bottle.post('/create-character/')
-def create_character_post():
+
+@bottle.get('/create-character/about/')
+def create_character_about_get():
+    uporabnik = trenutni_uporabnik()
+    return bottle.template('about.tpl', uporabnik=uporabnik)
+
+
+@bottle.post('/create-character/about/')
+def create_character_about_post():
     uporabnik = trenutni_uporabnik()
     ch_name = bottle.request.forms.getunicode('ch_name')
     uporabnik.character.name = ch_name
@@ -101,6 +111,22 @@ def create_character_post():
     uporabnik.character.dsubclass = ch_subclass
     ch_background = bottle.request.forms.getunicode('ch_background')
     uporabnik.character.background = ch_background
+    shrani_stanje(uporabnik)
+    if uporabnik.nov_uporabnik:
+        bottle.redirect('/create-character/abilities/')
+    else:
+        bottle.redirect('/')
+
+
+@bottle.get('/create-character/abilities/')
+def create_character_abilities_get():
+    uporabnik = trenutni_uporabnik()
+    return bottle.template('abilities.tpl', uporabnik=uporabnik, character=uporabnik.character, ABILITIES_SLOVAR=ABILITIES_SLOVAR)
+
+
+@bottle.post('/create-character/abilities/')
+def create_character_abilities_post():
+    uporabnik = trenutni_uporabnik()
     lvl = bottle.request.forms['level']
     uporabnik.character.set_level(int(lvl))
     strg = bottle.request.forms['strength']
@@ -115,11 +141,28 @@ def create_character_post():
         if ABILITIES_SLOVAR[x][0] in bottle.request.forms.keys():
             saving_profs.append(ABILITIES_SLOVAR[x][0])
     uporabnik.character.set_saving_proficiencies(saving_profs)
+    shrani_stanje(uporabnik)
+    if uporabnik.nov_uporabnik:
+        bottle.redirect('/create-character/skills/')
+    else:
+        bottle.redirect('/')
+
+
+@bottle.get('/create-character/skills/')
+def create_character_skills_get():
+    uporabnik = trenutni_uporabnik()
+    return bottle.template('skills.tpl', uporabnik=uporabnik, character=uporabnik.character, SKILLS_SLOVAR=SKILLS_SLOVAR)
+
+    
+@bottle.post('/create-character/skills/')
+def create_character_skills_post():
+    uporabnik = trenutni_uporabnik()
     skill_profs = []
     for x in range(18):
         if SKILLS_SLOVAR[x][0] in bottle.request.forms.keys():
             skill_profs.append(SKILLS_SLOVAR[x][0])
     uporabnik.character.set_skill_proficiencies(skill_profs)
+    uporabnik.nov_uporabnik = 0
     shrani_stanje(uporabnik)
     bottle.redirect('/')
 
@@ -130,7 +173,9 @@ def wallet_entry_post():
     naslov = bottle.request.forms.getunicode('naslov')
     datum = date.today().strftime("%Y-%m-%d")
     znesek = bottle.request.forms.getunicode('znesek')
-    opis = bottle.request.forms.get('opis', '')
+    opis = bottle.request.forms.getunicode('opis')
+    if opis == None:
+        opis = ''
     uporabnik.character.add_transaction(naslov, datum, znesek, opis)
     shrani_stanje(uporabnik)
     bottle.redirect('/')
@@ -142,6 +187,8 @@ def diary_entry_post():
     naslov = bottle.request.forms.getunicode('naslov')
     datum = date.today().strftime('%Y-%m-%d')
     vsebina = bottle.request.forms.getunicode('vsebina')
+    if vsebina == None:
+        vsebina == ''
     uporabnik.character.add_diary(naslov, datum, vsebina)
     shrani_stanje(uporabnik)
     bottle.redirect('/')

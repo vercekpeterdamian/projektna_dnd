@@ -15,10 +15,11 @@ SKILLS_STRG = ['athletics']
 
 
 class Uporabnik:
-    def __init__(self, uporabnisko_ime, zasifrirano_geslo, character):
+    def __init__(self, uporabnisko_ime, zasifrirano_geslo, character, nov_uporabnik=1):
         self.uporabnisko_ime = uporabnisko_ime
         self.zasifrirano_geslo = zasifrirano_geslo
         self.character = character
+        self.nov_uporabnik = nov_uporabnik
 
     @staticmethod
     def prijava(uporabnisko_ime, geslo_v_cistopisu):
@@ -50,6 +51,7 @@ class Uporabnik:
 
     def v_slovar(self):
         return {
+            'nov_uporabnik': self.nov_uporabnik,
             'uporabnisko_ime': self.uporabnisko_ime,
             'zasifrirano_geslo': self.zasifrirano_geslo,
             'character': self.character.prepare_to_save()
@@ -72,7 +74,8 @@ class Uporabnik:
         uporabnisko_ime = slovar['uporabnisko_ime']
         zasifrirano_geslo = slovar['zasifrirano_geslo']
         character = Character.load_character(slovar['character'])
-        return Uporabnik(uporabnisko_ime, zasifrirano_geslo, character)
+        nov_uporabnik = slovar['nov_uporabnik']
+        return Uporabnik(uporabnisko_ime, zasifrirano_geslo, character, nov_uporabnik)
 
     @staticmethod
     def iz_datoteke(uporabnisko_ime):
@@ -97,20 +100,24 @@ class Character:
         self.saving_profs_list = []
         self.skill_prof_list = []
         self.appearance_is = False
-        self.diary = []
-        self.wallet = []
+        self.diary = {0: 1}
+        self.wallet = {0: 1}
 
     def add_diary(self, naslov, datum, vsebina):
-        self.diary.append((naslov, datum, vsebina))
+        self.diary[self.diary[0]] = [naslov, datum, vsebina]
+        self.diary[0] += 1
 
     def add_transaction(self, naslov, datum, znesek, opis=''):
-        self.wallet.append((naslov, datum, int(znesek), opis))
+        self.wallet[self.wallet[0]] = [naslov, datum, int(znesek), opis]
+        self.wallet[0] += 1
         self.izracunaj_financno_stanje()
 
     def izracunaj_financno_stanje(self):
+        id_lista_transakcij = self.wallet.keys()
+        id_lista_transakcij.remove(0)
         skupaj = 0
-        for transakcija in self.wallet:
-            skupaj += transakcija[2]
+        for transakcija_id in id_lista_transakcij:
+            skupaj += self.wallet[transakcija_id][2]
         self.financno_stanje = skupaj
 
     def set_level(self, lvl):
