@@ -94,18 +94,24 @@ def character_homepage():
         SKILLS_SLOVAR=SKILLS_SLOVAR,
         diary_ids=diary_ids,
         wallet_ids=wallet_ids
-        )
+    )
 
 
 @bottle.get('/create-character/')
 def create_character_get():
-    return bottle.template('create-character.tpl', SKILLS_SLOVAR = SKILLS_SLOVAR)
+    return bottle.template(
+        'create-character.tpl', 
+        SKILLS_SLOVAR = SKILLS_SLOVAR
+    )
 
 
 @bottle.get('/create-character/about/')
 def create_character_about_get():
     uporabnik = trenutni_uporabnik()
-    return bottle.template('about.tpl', uporabnik=uporabnik)
+    return bottle.template(
+        'about.tpl', 
+        uporabnik=uporabnik
+    )
 
 
 @bottle.post('/create-character/about/')
@@ -133,7 +139,12 @@ def create_character_about_post():
 @bottle.get('/create-character/abilities/')
 def create_character_abilities_get():
     uporabnik = trenutni_uporabnik()
-    return bottle.template('abilities.tpl', uporabnik=uporabnik, character=uporabnik.character, ABILITIES_SLOVAR=ABILITIES_SLOVAR)
+    return bottle.template(
+        'abilities.tpl', 
+        uporabnik=uporabnik, 
+        character=uporabnik.character, 
+        ABILITIES_SLOVAR=ABILITIES_SLOVAR
+    )
 
 
 @bottle.post('/create-character/abilities/')
@@ -163,7 +174,12 @@ def create_character_abilities_post():
 @bottle.get('/create-character/skills/')
 def create_character_skills_get():
     uporabnik = trenutni_uporabnik()
-    return bottle.template('skills.tpl', uporabnik=uporabnik, character=uporabnik.character, SKILLS_SLOVAR=SKILLS_SLOVAR)
+    return bottle.template(
+        'skills.tpl', 
+        uporabnik=uporabnik, 
+        character=uporabnik.character, 
+        SKILLS_SLOVAR=SKILLS_SLOVAR
+    )
 
     
 @bottle.post('/create-character/skills/')
@@ -222,6 +238,17 @@ def delete_diary_entry(diary_id):
     uporabnik.character.diary.pop(diary_id)
     shrani_stanje(uporabnik)
     bottle.redirect('/')
+
+
+@bottle.get('/confirm-delete/<slovar>/<id:int>/')
+def confirm_delete(slovar, id):
+    uporabnik = trenutni_uporabnik()
+    return bottle.template(
+        'confirm-delete.tpl',
+        character=uporabnik.character,
+        slovar=slovar,
+        id=id
+    )
 
 
 bottle.run(debug=True, reloader=True)

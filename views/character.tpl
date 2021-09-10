@@ -184,7 +184,7 @@
                         {{character.wallet[id][0]}}     DATE: {{character.wallet[id][1]}}     AMOUNT: {{character.wallet[id][2]}}
                     </div>
                     <div>
-                        <form action='/wallet-entry-delete/{{id}}/' method='POST'>
+                        <form action='/confirm-delete/wallet/{{id}}/' method='GET'>
                             <button>Delete entry</button>
                         </form>
                     </div>
@@ -230,7 +230,7 @@
                     {{character.diary[id][0]}}     DATE: {{character.diary[id][1]}}
                 </div>
                 <div>
-                    <form action='/diary-entry-delete/{{id}}/' method='POST'>
+                    <form action='/confirm-delete/diary/{{id}}/' method='GET'>
                         <button>Delete entry</button>
                     </form>
                 </div>
