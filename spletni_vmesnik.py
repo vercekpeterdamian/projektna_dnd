@@ -1,5 +1,5 @@
 import bottle
-from model import SKILLS, Uporabnik
+from model import Uporabnik, kljuci_v_seznam
 from datetime import date
 
 PISKOTEK_UPORABNISKO_IME = 'User_cookies'
@@ -82,7 +82,19 @@ def odjava():
 @bottle.get('/character/')
 def character_homepage():
     uporabnik = trenutni_uporabnik()
-    return bottle.template('character.tpl', character=uporabnik.character, uporabnik=uporabnik, ABILITIES_SLOVAR=ABILITIES_SLOVAR, SKILLS_SLOVAR=SKILLS_SLOVAR)
+    wallet_ids = kljuci_v_seznam(uporabnik.character.wallet, 0)
+    wallet_ids.sort(reverse=True)
+    diary_ids = kljuci_v_seznam(uporabnik.character.diary, 0)
+    diary_ids.sort(reverse=True)
+    return bottle.template(
+        'character.tpl',
+        character=uporabnik.character,
+        uporabnik=uporabnik,
+        ABILITIES_SLOVAR=ABILITIES_SLOVAR,
+        SKILLS_SLOVAR=SKILLS_SLOVAR,
+        diary_ids=diary_ids,
+        wallet_ids=wallet_ids
+        )
 
 
 @bottle.get('/create-character/')
@@ -173,10 +185,19 @@ def wallet_entry_post():
     naslov = bottle.request.forms.getunicode('naslov')
     datum = date.today().strftime("%Y-%m-%d")
     znesek = bottle.request.forms.getunicode('znesek')
-    opis = bottle.request.forms.getunicode('opis')
-    if opis == None:
+    if 'opis' not in bottle.request.forms.keys():
         opis = ''
+    else:
+        opis = bottle.request.forms.getunicode('opis')
     uporabnik.character.add_transaction(naslov, datum, znesek, opis)
+    shrani_stanje(uporabnik)
+    bottle.redirect('/')
+
+
+@bottle.post('/wallet-entry-delete/<trans_id:int>/')
+def delete_wallet_entry(trans_id):
+    uporabnik = trenutni_uporabnik()
+    uporabnik.character.wallet.pop(trans_id)
     shrani_stanje(uporabnik)
     bottle.redirect('/')
 
@@ -186,10 +207,19 @@ def diary_entry_post():
     uporabnik = trenutni_uporabnik()
     naslov = bottle.request.forms.getunicode('naslov')
     datum = date.today().strftime('%Y-%m-%d')
-    vsebina = bottle.request.forms.getunicode('vsebina')
-    if vsebina == None:
-        vsebina == ''
+    if 'vsebina' not in bottle.request.forms.keys():
+        vsebina = ''
+    else:
+        vsebina = bottle.request.forms.getunicode('vsebina')
     uporabnik.character.add_diary(naslov, datum, vsebina)
+    shrani_stanje(uporabnik)
+    bottle.redirect('/')
+
+
+@bottle.post('/diary-entry-delete/<diary_id:int>/')
+def delete_diary_entry(diary_id):
+    uporabnik = trenutni_uporabnik()
+    uporabnik.character.diary.pop(diary_id)
     shrani_stanje(uporabnik)
     bottle.redirect('/')
 

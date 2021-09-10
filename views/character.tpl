@@ -178,16 +178,23 @@
             </form>
         </div>
         <div>
-            % for wallet_entry in character.wallet[::-1]:
-                <div class='entry_title'>
-                    {{wallet_entry[0]}}     DATE: {{wallet_entry[1]}}     AMOUNT: {{wallet_entry[2]}}
+            % for id in wallet_ids:
+                <div>
+                    <div>
+                        {{character.wallet[id][0]}}     DATE: {{character.wallet[id][1]}}     AMOUNT: {{character.wallet[id][2]}}
+                    </div>
+                    <div>
+                        <form action='/wallet-entry-delete/{{id}}/' method='POST'>
+                            <button>Delete entry</button>
+                        </form>
+                    </div>
                 </div>
-                % if not wallet_entry == '':
-                    <div class='entry_content'>
-                        {{wallet_entry[3]}}
-                    </div><br>
+                % if not character.wallet[id][3] == '':
+                <div>
+                    {{character.wallet[id][3]}}
+                </div><br>
                 % else:
-                    <br>
+                <br>
                 % end
             % end
         </div>
@@ -217,16 +224,23 @@
             </form>
         </div>
         <div>
-            % for diary_entry in character.diary[::-1]:
-                <div class='entry_title'>
-                    {{diary_entry[0]}}     DATE: {{diary_entry[1]}}
+            % for id in diary_ids:
+            <div>
+                <div>
+                    {{character.diary[id][0]}}     DATE: {{character.diary[id][1]}}
                 </div>
-                % if not diary_entry == '':
-                    <div class='entry_content'>
-                        {{diary_entry[2]}}
-                    </div><br>
+                <div>
+                    <form action='/diary-entry-delete/{{id}}/' method='POST'>
+                        <button>Delete entry</button>
+                    </form>
+                </div>
+            </div>
+                % if not character.diary[id][2] == '':
+                <div>
+                    {{character.diary[id][2]}}
+                </div><br>
                 % else:
-                    <br>
+                <br>
                 % end
             % end
         </div>

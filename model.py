@@ -5,6 +5,16 @@ import random
 def modifier(xx):
     return int(xx) // 2 - 5
 
+def kljuci_v_seznam(slovar, izjema):
+    kljuci = slovar.keys()
+    seznam = []
+    for kljuc in kljuci:
+        if kljuc == izjema:
+            continue
+        else:
+            seznam.append(kljuc)
+    return seznam
+
 ABILITIES = ['strg', 'dex', 'con', 'intl', 'wis', 'cha']
 SKILLS = ['acrobatics', 'animal_handling', 'arcana', 'atheltics', 'deception', 'history', 'insight', 'intimidation', 'investigation', 'medicine', 'nature', 'perception', 'performance', 'persuasion', 'religion', 'sleight_of_hand', 'stealth', 'survival']
 SKILLS_DEX = ['acrobatics', 'sleight_of_hand', 'stealth']
@@ -73,7 +83,7 @@ class Uporabnik:
     def iz_slovarja(slovar):
         uporabnisko_ime = slovar['uporabnisko_ime']
         zasifrirano_geslo = slovar['zasifrirano_geslo']
-        character = Character.load_character(slovar['character'])
+        character = Character.load_character(slovar['character'], slovar['nov_uporabnik'])
         nov_uporabnik = slovar['nov_uporabnik']
         return Uporabnik(uporabnisko_ime, zasifrirano_geslo, character, nov_uporabnik)
 
@@ -113,8 +123,7 @@ class Character:
         self.izracunaj_financno_stanje()
 
     def izracunaj_financno_stanje(self):
-        id_lista_transakcij = self.wallet.keys()
-        id_lista_transakcij.remove(0)
+        id_lista_transakcij = kljuci_v_seznam(self.wallet, 0)
         skupaj = 0
         for transakcija_id in id_lista_transakcij:
             skupaj += self.wallet[transakcija_id][2]
@@ -216,20 +225,30 @@ class Character:
                 'saving_proficiencies': self.saving_profs_list,
                 'character_appearance': [self.age, self.height, self.weight, self.eyes, self.complexion, self.hair]
             },
-            'wallet': self.wallet,
-            'diary': self.diary
+            'wallet': [
+                {
+                    'kljuc': kljuc,
+                    'transakcija': self.wallet[kljuc]
+                } for kljuc in self.wallet.keys()
+            ],
+            'diary': [
+                {
+                    'kljuc': kljuc,
+                    'dnevnik': self.diary[kljuc]
+                } for kljuc in self.diary.keys()
+            ]
         }
                 
 
 
     @classmethod
-    def load_character(cls, ch_slovar):
+    def load_character(cls, ch_slovar, nov_uporabnik):
         name, race, subrace, dclass, dsubclass, background = ch_slovar['about']['character_basic']
         character = Character(name, race, subrace, dclass, dsubclass, background)
         character.build_character(ch_slovar['about'])
-        character.wallet = ch_slovar['wallet']
+        if not nov_uporabnik:
+            character.nalozi_denarnico_in_dnevnik(ch_slovar)
         character.izracunaj_financno_stanje()
-        character.diary = ch_slovar['diary']
         return character
 
     def build_character(self, ch_slovar_about):
@@ -242,6 +261,23 @@ class Character:
         self.set_saving()
         age, height, weight, eyes, complexion, hair = ch_slovar_about['character_appearance']
         self.set_character_appearance(age, height, weight, eyes, complexion, hair)
+
+
+    def nalozi_denarnico_in_dnevnik(self, ch_slovar):
+        for transakcija in ch_slovar['wallet']:
+            if transakcija['kljuc'] == 0:
+                self.wallet[0] = transakcija['transakcija']
+            else:
+                kljuc = transakcija['kljuc']
+                naslov, datum, znesek, opis = transakcija['transakcija']
+                self.wallet[kljuc] = [naslov, datum, int(znesek), opis]
+        for vnos in ch_slovar['diary']:
+            if vnos['kljuc'] == 0:
+                self.diary[0] = vnos['dnevnik']
+            else:
+                kljuc = vnos['kljuc']
+                naslov, datum, vsebina = vnos['dnevnik']
+                self.diary[kljuc] = [naslov, datum, vsebina]
 
 
     def save_character(self, ime_datoteke):
