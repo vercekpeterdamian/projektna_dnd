@@ -1,6 +1,7 @@
 {
+    "nov_uporabnik": 0,
     "uporabnisko_ime": "peter",
-    "zasifrirano_geslo": "637002655$6484761a2233b96a782cd03f2a035ea3555c36f60fb78381db8be9d61563b1439bef59361db8a26c17f3bb384eae7261970c1117e12db934e375adcc1849ed27",
+    "zasifrirano_geslo": "2862276282$fd90aee38c193ecaf76e7692ca87dfbfa122c62288be68495ef93efc8f9f2adb0c2459faf1c200cd399b0985554bc219be2ea5fd5565385ff01d003f0d9c1e23",
     "character": {
         "about": {
             "character_basic": [
@@ -39,7 +40,51 @@
                 ""
             ]
         },
-        "wallet": [],
-        "diary": []
+        "wallet": [
+            {
+                "kljuc": 0,
+                "transakcija": 10
+            },
+            {
+                "kljuc": 7,
+                "transakcija": [
+                    "trans",
+                    "2021-09-17",
+                    18,
+                    "tgtrn"
+                ]
+            },
+            {
+                "kljuc": 9,
+                "transakcija": [
+                    "kupil bencin",
+                    "2021-09-18",
+                    -45,
+                    "na rudniskem petrolu"
+                ]
+            }
+        ],
+        "diary": [
+            {
+                "kljuc": 0,
+                "dnevnik": 4
+            },
+            {
+                "kljuc": 2,
+                "dnevnik": [
+                    "17. sept",
+                    "2021-09-17",
+                    "danes je lep dezeven jesenski dan"
+                ]
+            },
+            {
+                "kljuc": 3,
+                "dnevnik": [
+                    "povratek na orle",
+                    "2021-09-18",
+                    "danes sem prisel na pocitnice vrodno vas na dezelo"
+                ]
+            }
+        ]
     }
 }
