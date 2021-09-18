@@ -1,0 +1,38 @@
+{
+    "nov_uporabnik": 0,
+    "uporabnisko_ime": "test",
+    "zasifrirano_geslo": "4144709204$0b2cdd982f0a1b1bb006c0bf2331db8e47ea8427147dd7775deb9b2252d763cd897eb7eefd70fb9f831933896411000c63e9114bbda851190637db8fdb5421ed",
+    "character": {
+        "about": {
+            "character_basic": [
+                "",
+                "a",
+                "",
+                "",
+                "",
+                ""
+            ],
+            "level": 1,
+            "abilities": [
+                "10",
+                "10",
+                "10",
+                "10",
+                "10",
+                "10"
+            ],
+            "skill_proficiencies": [],
+            "saving_proficiencies": [],
+            "character_appearance": [
+                "",
+                "",
+                "",
+                "",
+                "",
+                ""
+            ]
+        },
+        "wallet": [],
+        "diary": []
+    }
+}
