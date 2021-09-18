@@ -10,8 +10,8 @@
     <input type='submit' value='Create your character'>
 </a>
 % else:
-<div>
-    <div>
+<div class='grid-container'>
+    <div class='col-1-1 grid-element'>
         <div>
             <h1>
                 Your character's sheet.
@@ -75,6 +75,8 @@
                 </table>
             </div>
         </div>
+    </div>
+    <div class='col-1-1 grid-element'>
         <div>
             <div>
                 <h2>
@@ -117,7 +119,9 @@
                 </table>
             </div>
         </div>
-        <div class='desno'>
+    </div>
+    <div class='col-3-2 grid-element'>
+        <div>
             <div>
                 <h2>
                     Skills
@@ -148,17 +152,13 @@
             </div>
         </div>
     </div>
-</div>
-<div>
-    <div>
+    <div class='col-2-2 grid-element'>
         <h1>
             Wallet
         </h1>
         <h2>
             Current ballance: {{character.financno_stanje}}
         </h2>
-    </div>
-    <div>
         <div>
             <h2>
                 New wallet entry
@@ -177,6 +177,8 @@
                 </button>
             </form>
         </div>
+    </div>
+    <div class='col-1-4 grid-element'>
         <div>
             % for id in wallet_ids:
                 <div>
@@ -199,14 +201,10 @@
             % end
         </div>
     </div>
-</div>
-<div>
-    <div>
+    <div class='col-2-2 grid-element'>
         <h1>
             Diary
         </h1>
-    </div>
-    <div>
         <div>
             <h2>
                 New diary entry
@@ -223,6 +221,8 @@
                 </button>
             </form>
         </div>
+    </div>
+    <div class='col-1-4 grid-element'>
         <div>
             % for id in diary_ids:
             <div>

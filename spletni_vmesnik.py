@@ -26,6 +26,12 @@ def podatki_uporabnika(uporabnisko_ime):
     return Uporabnik.iz_datoteke(uporabnisko_ime)
 
 
+@bottle.get('/static/<ime_dat:path>')
+def server_static(ime_dat):
+    pot = 'staticne_datoteke'
+    return bottle.static_file(ime_dat, root=pot)
+
+
 @bottle.get('/')
 def osnovni_zaslon():
     bottle.redirect('/character/')
