@@ -68,7 +68,7 @@ class Uporabnik:
         }
 
     def v_datoteko(self):
-        with open(Uporabnik.ime_uporabnikove_datoteke(self.uporabnisko_ime), 'w') as datoteka:
+        with open(Uporabnik.ime_uporabnikove_datoteke(self.uporabnisko_ime), 'w', encoding='utf8') as datoteka:
             json.dump(self.v_slovar(), datoteka, ensure_ascii=False, indent=4)
 
     def preveri_geslo(self, geslo_v_cistopisu):
@@ -90,7 +90,7 @@ class Uporabnik:
     @staticmethod
     def iz_datoteke(uporabnisko_ime):
         try:
-            with open(Uporabnik.ime_uporabnikove_datoteke(uporabnisko_ime)) as datoteka:
+            with open(Uporabnik.ime_uporabnikove_datoteke(uporabnisko_ime), encoding='utf8') as datoteka:
                 slovar = json.load(datoteka)
                 return Uporabnik.iz_slovarja(slovar)
         except FileNotFoundError:
@@ -109,7 +109,6 @@ class Character:
         self.lvl = 0
         self.saving_profs_list = []
         self.skill_prof_list = []
-        self.appearance_is = False
         self.diary = {0: 1}
         self.wallet = {0: 1}
 
@@ -199,31 +198,19 @@ class Character:
         self.set_skills()
         self.set_saving()
 
-    def set_character_appearance(self, age, height, weight, eyes, complexion, hair):
-        self.age = age
-        self.height = height
-        self.weight = weight
-        self.eyes = eyes
-        self.complexion = complexion
-        self.hair = hair
-        self.appearance_is = True
-
     def set_about(self, text):
         self.about = text
 
     def prepare_to_save(self):
         if not self.abilities_are:
             self.set_ability_stats(0, 0, 0, 0, 0, 0)
-        if not self.appearance_is:
-            self.set_character_appearance('', '', '', '', '', '')
         return {
             'about': {
                 'character_basic': [self.name, self.race, self.subrace, self.dclass, self.dsubclass, self.background],
                 'level': self.lvl,
                 'abilities': [self.abilities['strg'], self.abilities['dex'], self.abilities['con'], self.abilities['intl'], self.abilities['wis'], self.abilities['cha']],
                 'skill_proficiencies': self.skill_prof_list,
-                'saving_proficiencies': self.saving_profs_list,
-                'character_appearance': [self.age, self.height, self.weight, self.eyes, self.complexion, self.hair]
+                'saving_proficiencies': self.saving_profs_list
             },
             'wallet': [
                 {
@@ -259,8 +246,6 @@ class Character:
         self.set_skills()
         self.set_saving_proficiencies(ch_slovar_about['saving_proficiencies'])
         self.set_saving()
-        age, height, weight, eyes, complexion, hair = ch_slovar_about['character_appearance']
-        self.set_character_appearance(age, height, weight, eyes, complexion, hair)
 
 
     def nalozi_denarnico_in_dnevnik(self, ch_slovar):

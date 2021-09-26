@@ -30,14 +30,6 @@
             "saving_proficiencies": [
                 "wis",
                 "cha"
-            ],
-            "character_appearance": [
-                "",
-                "",
-                "",
-                "",
-                "",
-                ""
             ]
         },
         "wallet": [
@@ -67,7 +59,7 @@
         "diary": [
             {
                 "kljuc": 0,
-                "dnevnik": 4
+                "dnevnik": 5
             },
             {
                 "kljuc": 2,
@@ -83,6 +75,14 @@
                     "povratek na orle",
                     "2021-09-18",
                     "danes sem prisel na pocitnice vrodno vas na dezelo"
+                ]
+            },
+            {
+                "kljuc": 4,
+                "dnevnik": [
+                    "nedelja, 26/09",
+                    "2021-09-26",
+                    "danes sem si končno vzel nekaj časa za design"
                 ]
             }
         ]

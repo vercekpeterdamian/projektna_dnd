@@ -34,14 +34,18 @@
     border: 0.1rem solid white;
     border-radius: 0.4rem;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
+    min-width: 20%;
 }
 
 .flex-container {
   display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  flex-wrap: wrap;
 }
 
 .flex-container > div {
-    padding: 0.7rem;
+    padding: 10px;
 }
 
 #title-text {
