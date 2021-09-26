@@ -13,62 +13,44 @@
 <div class='grid-container'>
     <div class='col-1-4 flex-container'>
         <div class='grid-element'>
-            <div>
+            <h1 class='info-title'>About</h1><br>
+            <a href='/create-character/about/'><button>Edit</button></a>
+            <div class='info-2'>
                 <div>
-                    <h2>About</h2><br>
-                    <a href='/create-character/about/'><button>Edit</button></a>
+                    <h3>Name:</h3>
+                    <div class='info-field'>
+                        {{character.name}}
+                    </div>
                 </div>
                 <div>
-                    <table border="1">
-                        <tr>
-                            <td>
-                                Name
-                            </td>
-                            <td>
-                                {{character.name}}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Race
-                            </td>
-                            <td>
-                                {{character.race}}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Subrace
-                            </td>
-                            <td>
-                                {{character.subrace}}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Class
-                            </td>
-                            <td>
-                                {{character.dclass}}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Subclass
-                            </td>
-                            <td>
-                                {{character.dsubclass}}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Background
-                            </td>
-                            <td>
-                                {{character.background}}
-                            </td>
-                        </tr>
-                    </table>
+                    <h3>Race:</h3>
+                    <div class='info-field'>
+                        {{character.race}}
+                    </div>
+                </div>
+                <div>
+                    <h3>Subrace:</h3>
+                    <div class='info-field'>
+                        {{character.subrace}}
+                    </div>
+                </div>
+                <div>
+                    <h3>Class:</h3>
+                    <div class='info-field'>
+                        {{character.dclass}}
+                    </div>
+                </div>
+                <div>
+                    <h3>Subclass:</h3>
+                    <div class='info-field'>
+                        {{character.dsubclass}}
+                    </div>
+                </div>
+                <div>
+                    <h3>Background:</h3>
+                    <div class='info-field'>
+                        {{character.background}}
+                    </div>
                 </div>
             </div>
         </div>

@@ -31,10 +31,11 @@
 
 .grid-element {
     background-color: white;
-    border: 0.1rem solid white;
-    border-radius: 0.4rem;
+    border: 5px inset chocolate;
+    border-radius: 8px;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
     min-width: 20%;
+    margin: 8px;
 }
 
 .flex-container {
@@ -48,11 +49,6 @@
     padding: 10px;
 }
 
-#title-text {
-    width: 100%;
-    margin-left: 1.5rem;
-}
-
 body {
     background-color: #b1d3db;
     /*background-image: url("background.jpg");
@@ -61,15 +57,26 @@ body {
     background-size: cover;*/
 }
 
-.grid-element > h2 {
-    margin: 1.5rem;
-    border-bottom: 0.15rem solid #b1d3db;
+.info-title {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 15px;
 }
-
-img {
-    border-radius: 0.4rem;
+.info-2 {
+    padding: 10px;
+    border: 3px;
+    border-style: inset;
+    border-color: chocolate;
+    border-radius: 8px;
+    background-color: rgb(223, 174, 115);
 }
-
-li {
-    padding: 0.3rem;
+.info-field {
+    background-color: white;
+    border: 1px;
+    border-style: solid;
+    padding: 4px;
+}
+h3 {
+    margin-top: 15px;
+    margin-bottom: 0;
 }
