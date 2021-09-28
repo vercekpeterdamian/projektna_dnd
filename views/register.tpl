@@ -1,30 +1,28 @@
 % rebase('osnova.tpl')
-<div>
-    <h1>
-        Register
-    </h1>
-</div>
-<div>
-    <form method="POST">
-        <div>
-            <label >Username</label>
+<div class='grid-center-element'>
+    <div class='grid-element col-2-2'>
+        <h1 class='element-title'>
+            Register
+        </h1>
+        <div class='box'><form method="POST">
             <div>
-                <input class="input" name="username" type="text" placeholder="username">
+                <label >Username</label>
+                <div>
+                    <input class="input" name="username" type="text" placeholder="username">
+                </div>
+                % if napaka:
+                <p>{{ napaka }}</p>
+                % end
             </div>
-            % if napaka:
-            <p>{{ napaka }}</p>
-            % end
-        </div>
-        <div>
-            <label>Password</label>
             <div>
-                <input class="input" name="password" type="password" placeholder="password">
+                <label>Password</label>
+                <div>
+                    <input class="input" name="password" type="password" placeholder="password">
+                </div>
             </div>
-        </div>
-        <div>
             <div>
-                <button>Regiser</button>
+                <button>Register</button>
             </div>
-        </div>
-    </form>
+        </form></div>
+    </div>
 </div>

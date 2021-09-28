@@ -35,7 +35,7 @@
         "wallet": [
             {
                 "kljuc": 0,
-                "transakcija": 10
+                "transakcija": 12
             },
             {
                 "kljuc": 7,
@@ -54,12 +54,30 @@
                     -45,
                     "na rudniskem petrolu"
                 ]
+            },
+            {
+                "kljuc": 10,
+                "transakcija": [
+                    "Nakup dobroimetja za kartico Urbana",
+                    "2021-09-27",
+                    -5,
+                    "Danes, preden sem šel na LPP avtobus 3B okoli 15:11, sem na urbanomatu pri končni avtobusni postaji Rudnik kupil 5€ dobroimetja. Plačal sem s kartico."
+                ]
+            },
+            {
+                "kljuc": 11,
+                "transakcija": [
+                    "plačilo",
+                    "2021-09-28",
+                    67,
+                    "dobil cekinčke od pobiranja davkov"
+                ]
             }
         ],
         "diary": [
             {
                 "kljuc": 0,
-                "dnevnik": 5
+                "dnevnik": 7
             },
             {
                 "kljuc": 2,
@@ -83,6 +101,22 @@
                     "nedelja, 26/09",
                     "2021-09-26",
                     "danes sem si končno vzel nekaj časa za design"
+                ]
+            },
+            {
+                "kljuc": 5,
+                "dnevnik": [
+                    "ponedeljek, 27/09",
+                    "2021-09-27",
+                    "danes bom poklical pošto, zdaj jo bom!"
+                ]
+            },
+            {
+                "kljuc": 6,
+                "dnevnik": [
+                    "vreme",
+                    "2021-09-27",
+                    "danes je pol dneva deževalo, majkemi bed "
                 ]
             }
         ]

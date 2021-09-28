@@ -5,7 +5,7 @@ from datetime import date
 PISKOTEK_UPORABNISKO_IME = 'User_cookies'
 SKRIVNOST = 'moja macka Mufi'
 SKILLS_SLOVAR = {0: ('acrobatics', 'Acrobatics'), 1: ('animal_handling', 'Animal handling'), 2: ('arcana', 'Arcana'), 3: ('athletics', 'Athletics'), 4: ('deception', 'Deception'), 5: ('history', 'History'), 6: ('insight', 'Insight'), 7: ('intimidation', 'Intimidation'), 8: ('investigation', 'Investigation'), 9: ('medicine', 'Medicine'), 10: ('nature', 'Nature'), 11: ('perception', 'Perception'), 12: ('performance', 'Performance'), 13: ('persuasion', 'Persuasion'), 14: ('religion', 'Religion'), 15: ('sleight_of_hand', 'Sleight of hand'), 16: ('stealth', 'Stealth'), 17: ('survival', 'Survival')}
-ABILITIES_SLOVAR = {0: ('strg', 'Strength'), 1: ('dex', 'Dexterity'), 2: ('con', 'Constitution'), 3: ('intl', 'Intelligent'), 4: ('wis', 'Wisdom'), 5: ('cha', 'Charisma')}
+ABILITIES_SLOVAR = {0: ('strg', 'Strength', 'STR'), 1: ('dex', 'Dexterity', 'DEX'), 2: ('con', 'Constitution', 'CON'), 3: ('intl', 'Intelligent', 'INT'), 4: ('wis', 'Wisdom', 'WIS'), 5: ('cha', 'Charisma', 'CHA')}
 
 
 def shrani_stanje(uporabnik):
@@ -251,6 +251,7 @@ def confirm_delete(slovar, id):
     uporabnik = trenutni_uporabnik()
     return bottle.template(
         'confirm-delete.tpl',
+        uporabnik=uporabnik,
         character=uporabnik.character,
         slovar=slovar,
         id=id
