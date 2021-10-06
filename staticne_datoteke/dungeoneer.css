@@ -82,6 +82,7 @@
 
 body {
     background-image: url('/static/ozadje.jpg');
+    width: 100%;
 }
 
 .element-title {

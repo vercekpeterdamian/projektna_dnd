@@ -126,16 +126,16 @@
                 <label>Amount:</label>
                 <input name='znesek' type='number' vlaue='0'><br>
                 <label>Description:</label><br>
-                <textarea name='opis' rows='3', cols='50'></textarea><br><br>
+                <textarea name='opis' rows='3' style="width: 100%;"></textarea><br><br>
                 <button>
                     Make an entry!
                 </button>
             </form>
-        </div>
+        </div>c
     </div>
     <div class='col-1-4 flex-container'>
         % for id in wallet_ids:
-        <div class='grid-element' style='max-width: 30%;'>
+        <div class='grid-element' style='max-width: 400px;'>
             <h2 class='entry-title'>{{character.wallet[id][0]}}</h2>
             <div class='grid-3x1'>
                 <div class='box'>DATE: <div class='box-field'>{{character.wallet[id][1]}}</div></div>
@@ -164,7 +164,7 @@
                 <label>Title:</label>
                 <input name='naslov' type='text'><br>
                 <label>Content:</label><br>
-                <textarea name='vsebina' rows='3', cols='50'></textarea><br><br>
+                <textarea name='vsebina' rows='3' style="width: 100%;"></textarea><br><br>
                 <button>
                     Make an entry!
                 </button>
@@ -173,7 +173,7 @@
     </div>
     <div class='col-1-4 flex-container'>
         % for id in diary_ids:
-        <div class='grid-element'>
+        <div class='grid-element' style='max-width: 400px;'>
             <h2 class='entry-title'>{{character.diary[id][0]}}</h2>
             <div class='grid-2x1'>
                 <div class='box'>DATE: <div class='box-field'>{{character.diary[id][1]}}</div></div>
