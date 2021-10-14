@@ -9,4 +9,4 @@ za ta račun so že vneseni podatki za mojega D&D junaka.
 **Opomba:** nisem avtor razreda 'Uporabnik' v model.py datoteki in funkcij v spletni_vmesnik.py, ki so označene z '##'. 
 Avtor teh je prof. doc. dr. Pretnar Matija.
 
-**Opomba za profesorja:** se opravičujem za kopiranje:) Ko sem se lotil spletnea vmesnika nisem vedel kako in kaj, sem se pa veliko naučil. Hvala.
+**Opomba za profesorja:** se opravičujem za kopiranje:) Ko sem se lotil spletnega vmesnika nisem vedel kako in kaj, sem se pa veliko naučil. Hvala.
