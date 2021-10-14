@@ -15,16 +15,13 @@ def kljuci_v_seznam(slovar, izjema):
             seznam.append(kljuc)
     return seznam
 
+
 ABILITIES = ['strg', 'dex', 'con', 'intl', 'wis', 'cha']
 SKILLS = ['acrobatics', 'animal_handling', 'arcana', 'atheltics', 'deception', 'history', 'insight', 'intimidation', 'investigation', 'medicine', 'nature', 'perception', 'performance', 'persuasion', 'religion', 'sleight_of_hand', 'stealth', 'survival']
-SKILLS_DEX = ['acrobatics', 'sleight_of_hand', 'stealth']
-SKILLS_WIS = ['animal_handling', 'insight', 'medicine', 'perception', 'survival']
-SKILLS_INTL = ['arcana', 'history', 'investigation', 'nature', 'religion']
-SKILLS_CHA = ['deception', 'intimidation', 'performance', 'persuasion']
-SKILLS_STRG = ['athletics']
+SKILLS_SLOVAR = {'strg': ['athletics'], 'dex': ['acrobatics', 'sleight_of_hand', 'stealth'], 'con': [], 'intl': ['arcana', 'history', 'investigation', 'nature', 'religion'], 'wis': ['animal_handling', 'insight', 'medicine', 'perception', 'survival'], 'cha': ['deception', 'intimidation', 'performance', 'persuasion']}
+COMBAT = ['current_hp', 'max_hp', 'initiative', 'attack_mod', 'ac', 'save_dc']
 
-
-class Uporabnik:
+class Uporabnik: ##
     def __init__(self, uporabnisko_ime, zasifrirano_geslo, character, nov_uporabnik=1):
         self.uporabnisko_ime = uporabnisko_ime
         self.zasifrirano_geslo = zasifrirano_geslo
@@ -111,6 +108,7 @@ class Character:
         self.skill_prof_list = []
         self.diary = {0: 1}
         self.wallet = {0: 1}
+        self.combat = {}
 
     def add_diary(self, naslov, datum, vsebina):
         self.diary[self.diary[0]] = [naslov, datum, vsebina]
@@ -154,38 +152,19 @@ class Character:
 
     def set_skills(self):
         self.skills = {}
-        for skill in SKILLS_DEX:
-            self.skills[skill] = self.abilities_mods['dex']
-            if skill in self.skill_prof_list:
-                self.skills[skill] += self.prof_bonus
-        for skill in SKILLS_WIS:
-            self.skills[skill] = self.abilities_mods['wis']
-            if skill in self.skill_prof_list:
-                self.skills[skill] += self.prof_bonus
-        for skill in SKILLS_INTL:
-            self.skills[skill] = self.abilities_mods['intl']
-            if skill in self.skill_prof_list:
-                self.skills[skill] += self.prof_bonus
-        for skill in SKILLS_CHA:
-            self.skills[skill] = self.abilities_mods['cha']
-            if skill in self.skill_prof_list:
-                self.skills[skill] += self.prof_bonus
-        for skill in SKILLS_STRG:
-            self.skills[skill] = self.abilities_mods['strg']
-            if skill in self.skill_prof_list:
-                self.skills[skill] += self.prof_bonus
+        for ability in ABILITIES:
+            for skill in SKILLS_SLOVAR[ability]:
+                self.skills[skill] = self.abilities_mods[ability]
+                if skill in self.skill_prof_list:
+                    self.skills[skill] += self.prof_bonus
 
     def set_saving_proficiencies(self, save_proficiencies_list):
         self.saving_profs_list = save_proficiencies_list
 
     def set_saving(self):
         self.saving_mods = {}
-        self.saving_mods['strg'] = self.abilities_mods['strg'] + int('strg' in self.saving_profs_list) * self.prof_bonus
-        self.saving_mods['dex'] = self.abilities_mods['dex'] + int('dex' in self.saving_profs_list) * self.prof_bonus
-        self.saving_mods['con'] = self.abilities_mods['con'] + int('con' in self.saving_profs_list) * self.prof_bonus
-        self.saving_mods['intl'] = self.abilities_mods['intl'] + int('intl' in self.saving_profs_list) * self.prof_bonus
-        self.saving_mods['wis'] = self.abilities_mods['wis'] + int('wis' in self.saving_profs_list) * self.prof_bonus
-        self.saving_mods['cha'] = self.abilities_mods['cha'] + int('cha' in self.saving_profs_list) * self.prof_bonus
+        for ability in ABILITIES:
+            self.saving_mods[ability] = self.abilities_mods[ability] + int(ability in self.saving_profs_list) * self.prof_bonus
 
     def change_level(self, lvl):
         self.lvl = lvl
@@ -198,10 +177,11 @@ class Character:
         self.set_skills()
         self.set_saving()
 
-    def set_about(self, text):
-        self.about = text
+    def set_combat(self, combat_slovar):
+        for cmb in COMBAT:
+            self.combat[cmb] = combat_slovar[cmb]
 
-    def prepare_to_save(self):
+    def prepare_to_save(self): ##
         if not self.abilities_are:
             self.set_ability_stats(0, 0, 0, 0, 0, 0)
         return {
@@ -210,7 +190,8 @@ class Character:
                 'level': self.lvl,
                 'abilities': [self.abilities['strg'], self.abilities['dex'], self.abilities['con'], self.abilities['intl'], self.abilities['wis'], self.abilities['cha']],
                 'skill_proficiencies': self.skill_prof_list,
-                'saving_proficiencies': self.saving_profs_list
+                'saving_proficiencies': self.saving_profs_list,
+                'combat' : {cmb: self.combat.get(cmb, 0) for cmb in COMBAT}
             },
             'wallet': [
                 {
@@ -228,7 +209,7 @@ class Character:
                 
 
 
-    @classmethod
+    @classmethod ##
     def load_character(cls, ch_slovar, nov_uporabnik):
         name, race, subrace, dclass, dsubclass, background = ch_slovar['about']['character_basic']
         character = Character(name, race, subrace, dclass, dsubclass, background)
@@ -246,6 +227,7 @@ class Character:
         self.set_skills()
         self.set_saving_proficiencies(ch_slovar_about['saving_proficiencies'])
         self.set_saving()
+        self.set_combat(ch_slovar_about['combat'])
 
 
     def nalozi_denarnico_in_dnevnik(self, ch_slovar):
@@ -265,11 +247,11 @@ class Character:
                 self.diary[kljuc] = [naslov, datum, vsebina]
 
 
-    def save_character(self, ime_datoteke):
+    def save_character(self, ime_datoteke): ##
         with open(ime_datoteke, 'w') as datoteka:
             json.dump(self.prepare_to_save(), datoteka, ensure_ascii=False, indent=4)
 
-    @classmethod
+    @classmethod ##
     def load_character_from_file(cls, ime_datoteke):
         with open(ime_datoteke) as datoteka:
             ch_slovar = json.load(datoteka)

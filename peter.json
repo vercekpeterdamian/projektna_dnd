@@ -30,12 +30,20 @@
             "saving_proficiencies": [
                 "wis",
                 "cha"
-            ]
+            ],
+            "combat": {
+                "current_hp": 29,
+                "max_hp": 29,
+                "initiative": 2,
+                "attack_mod": 7,
+                "ac": 17,
+                "save_dc": 15
+            }
         },
         "wallet": [
             {
                 "kljuc": 0,
-                "transakcija": 12
+                "transakcija": 13
             },
             {
                 "kljuc": 7,
@@ -72,6 +80,15 @@
                     67,
                     "dobil cekinčke od pobiranja davkov"
                 ]
+            },
+            {
+                "kljuc": 12,
+                "transakcija": [
+                    "jabolko",
+                    "2021-10-06",
+                    -1,
+                    "bilo je dobro"
+                ]
             }
         ],
         "diary": [
@@ -84,7 +101,7 @@
                 "dnevnik": [
                     "17. sept",
                     "2021-09-17",
-                    "danes je lep dezeven jesenski dan"
+                    "danes je lep deževen jesenski dan"
                 ]
             },
             {
@@ -92,7 +109,7 @@
                 "dnevnik": [
                     "povratek na orle",
                     "2021-09-18",
-                    "danes sem prisel na pocitnice vrodno vas na dezelo"
+                    "danes sem prisel na pocitnice v rodno vas na deželo"
                 ]
             },
             {
@@ -116,7 +133,7 @@
                 "dnevnik": [
                     "vreme",
                     "2021-09-27",
-                    "danes je pol dneva deževalo, majkemi bed "
+                    "danes je pol dneva deževalo"
                 ]
             }
         ]

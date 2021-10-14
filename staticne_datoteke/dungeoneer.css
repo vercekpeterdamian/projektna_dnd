@@ -34,7 +34,21 @@
     display: grid;
     grid-template-columns: 110px 110px 110px;
     grid-template-rows: 180px 180px;
-    gap: 16px;
+    gap: 10px;
+}
+
+.grid-3x2_abt {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    grid-template-rows: auto auto;
+    gap: 10px;
+}
+
+.grid-3x2_cmb {
+    display: grid;
+    grid-template-columns: 110px 110px 110px;
+    grid-template-rows: 150px 150px;
+    gap: 10px;
 }
 
 .grid-2x9 {
@@ -83,6 +97,8 @@
 body {
     background-image: url('/static/ozadje.jpg');
     width: 100%;
+    margin: 0;
+    padding: 10px;
 }
 
 .element-title {

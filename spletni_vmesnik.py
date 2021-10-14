@@ -6,13 +6,13 @@ PISKOTEK_UPORABNISKO_IME = 'User_cookies'
 SKRIVNOST = 'moja macka Mufi'
 SKILLS_SLOVAR = {0: ('acrobatics', 'Acrobatics'), 1: ('animal_handling', 'Animal handling'), 2: ('arcana', 'Arcana'), 3: ('athletics', 'Athletics'), 4: ('deception', 'Deception'), 5: ('history', 'History'), 6: ('insight', 'Insight'), 7: ('intimidation', 'Intimidation'), 8: ('investigation', 'Investigation'), 9: ('medicine', 'Medicine'), 10: ('nature', 'Nature'), 11: ('perception', 'Perception'), 12: ('performance', 'Performance'), 13: ('persuasion', 'Persuasion'), 14: ('religion', 'Religion'), 15: ('sleight_of_hand', 'Sleight of hand'), 16: ('stealth', 'Stealth'), 17: ('survival', 'Survival')}
 ABILITIES_SLOVAR = {0: ('strg', 'Strength', 'STR'), 1: ('dex', 'Dexterity', 'DEX'), 2: ('con', 'Constitution', 'CON'), 3: ('intl', 'Intelligent', 'INT'), 4: ('wis', 'Wisdom', 'WIS'), 5: ('cha', 'Charisma', 'CHA')}
+COMBAT_SLOVAR = {0: ('current_hp', 'HP'), 1: ('max_hp', 'Max. HP'), 2: ('initiative', 'Init.'), 3: ('attack_mod', 'Atk MOD'), 4: ('ac', 'AC'), 5: ('save_dc', 'Save DC')}
 
-
-def shrani_stanje(uporabnik):
+def shrani_stanje(uporabnik): ##
     uporabnik.v_datoteko()
 
 
-def trenutni_uporabnik():
+def trenutni_uporabnik(): ##
     uporabnisko_ime = bottle.request.get_cookie(
         PISKOTEK_UPORABNISKO_IME, secret=SKRIVNOST
     )
@@ -22,27 +22,27 @@ def trenutni_uporabnik():
         bottle.redirect('/signin/')
 
 
-def podatki_uporabnika(uporabnisko_ime):
+def podatki_uporabnika(uporabnisko_ime): ##
     return Uporabnik.iz_datoteke(uporabnisko_ime)
 
 
-@bottle.get('/static/<ime_dat:path>')
+@bottle.get('/static/<ime_dat:path>') ##
 def server_static(ime_dat):
     pot = 'staticne_datoteke'
     return bottle.static_file(ime_dat, root=pot)
 
 
-@bottle.get('/')
+@bottle.get('/') ##
 def osnovni_zaslon():
     bottle.redirect('/character/')
 
 
-@bottle.get('/register/')
+@bottle.get('/register/') ##
 def registracija_get():
     return bottle.template('register.tpl', napaka=None)
 
 
-@bottle.post('/register/')
+@bottle.post('/register/') ##
 def registracija_post():
     uporabnisko_ime = bottle.request.forms.getunicode('username')
     geslo_v_cistopisu = bottle.request.forms.getunicode('password')
@@ -58,12 +58,12 @@ def registracija_post():
         return bottle.template('register.tpl', napaka=e.args[0])
 
 
-@bottle.get('/signin/')
+@bottle.get('/signin/') ##
 def prijava_get():
     return bottle.template('signin.tpl', napaka=None)
 
 
-@bottle.post('/signin/')
+@bottle.post('/signin/') ##
 def prijava_post():
     uporabnisko_ime = bottle.request.forms.getunicode('username')
     geslo_v_cistopisu = bottle.request.forms.getunicode('password')
@@ -79,7 +79,7 @@ def prijava_post():
         return bottle.template('signin.tpl', napaka=e.args[0])
 
 
-@bottle.post('/signout/')
+@bottle.post('/signout/') ##
 def odjava():
     bottle.response.delete_cookie(PISKOTEK_UPORABNISKO_IME, path='/')
     bottle.redirect('/')
@@ -98,6 +98,7 @@ def character_homepage():
         uporabnik=uporabnik,
         ABILITIES_SLOVAR=ABILITIES_SLOVAR,
         SKILLS_SLOVAR=SKILLS_SLOVAR,
+        COMBAT_SLOVAR=COMBAT_SLOVAR,
         diary_ids=diary_ids,
         wallet_ids=wallet_ids
     )
@@ -116,7 +117,8 @@ def create_character_about_get():
     uporabnik = trenutni_uporabnik()
     return bottle.template(
         'about.tpl', 
-        uporabnik=uporabnik
+        uporabnik=uporabnik,
+        character=uporabnik.character
     )
 
 
@@ -196,7 +198,48 @@ def create_character_skills_post():
         if SKILLS_SLOVAR[x][0] in bottle.request.forms.keys():
             skill_profs.append(SKILLS_SLOVAR[x][0])
     uporabnik.character.set_skill_proficiencies(skill_profs)
+    shrani_stanje(uporabnik)
+    if uporabnik.nov_uporabnik:
+        bottle.redirect('/create-character/combat/')
+    else:
+        bottle.redirect('/')
+
+
+@bottle.get('/create-character/combat/')
+def create_character_combat_get():
+    uporabnik = trenutni_uporabnik()
+    return bottle.template(
+        'combat.tpl',
+        uporabnik=uporabnik,
+        character=uporabnik.character
+    )
+
+
+@bottle.post('/create-character/combat/')
+def create_character_combat_post():
+    uporabnik = trenutni_uporabnik()
+    for x in range(6):
+        if x == 0:
+            cmb = COMBAT_SLOVAR[x][0]
+            num = bottle.request.forms['max_hp']
+            uporabnik.character.combat[cmb] = int(num)
+        else:
+            cmb = COMBAT_SLOVAR[x][0]
+            num = bottle.request.forms[cmb]
+            uporabnik.character.combat[cmb] = int(num)
     uporabnik.nov_uporabnik = 0
+    shrani_stanje(uporabnik)
+    bottle.redirect('/')
+
+
+@bottle.post('/combat/change-hp/')
+def change_hp():
+    uporabnik = trenutni_uporabnik()
+    num = bottle.request.forms['change']
+    predznak = 1
+    if bottle.request.forms['plusminus'] == 'Taken':
+        predznak = -1
+    uporabnik.character.combat['current_hp'] += predznak * int(num)
     shrani_stanje(uporabnik)
     bottle.redirect('/')
 

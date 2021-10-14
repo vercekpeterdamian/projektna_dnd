@@ -17,41 +17,41 @@
 </div>
 % else:
 <div class='grid-main'>
-    <div class='col-1-4 flex-container'>
+    <div class='col-1-4'>
         <div class='grid-element'>
             <h1 class='element-title'>About</h1>
-            <div class='box' style='padding-top: 0;'>
-                <div>
+            <div class='grid-3x2_abt'>
+                <div class='box' style='padding-top: 0;'>
                     <h3 class='top-margin'>Name:</h3>
                     <div class='box-field'>
                         {{character.name}}
                     </div>
                 </div>
-                <div>
+                <div class='box' style='padding-top: 0;'>
                     <h3 class='top-margin'>Race:</h3>
                     <div class='box-field'>
                         {{character.race}}
                     </div>
                 </div>
-                <div>
+                <div class='box' style='padding-top: 0;'>
                     <h3 class='top-margin'>Subrace:</h3>
                     <div class='box-field'>
                         {{character.subrace}}
                     </div>
                 </div>
-                <div>
+                <div class='box' style='padding-top: 0;'>
                     <h3 class='top-margin'>Class:</h3>
                     <div class='box-field'>
                         {{character.dclass}}
                     </div>
                 </div>
-                <div>
+                <div class='box' style='padding-top: 0;'>
                     <h3 class='top-margin'>Subclass:</h3>
                     <div class='box-field'>
                         {{character.dsubclass}}
                     </div>
                 </div>
-                <div>
+                <div class='box' style='padding-top: 0;'>
                     <h3 class='top-margin'>Background:</h3>
                     <div class='box-field'>
                         {{character.background}}
@@ -60,6 +60,8 @@
             </div>
             <a href='/create-character/about/'><button>Edit</button></a>
         </div>
+    </div>
+    <div class='col-1-4 flex-container'>
         <div class='grid-element'>
             <h1 class='element-title'>
                 Abilities
@@ -104,9 +106,36 @@
             <h1 class='element-title'>
                 Combat
             </h1>
-            <div>
-                pozdravcki
+            <div class='grid-3x2_cmb'>
+                % for x in range(6):
+                <div class='box'>
+                    <h3 class='element-title'>{{ COMBAT_SLOVAR[x][1] }}</h3>
+                    <div class='box-field ability-no'>
+                        {{ character.combat[COMBAT_SLOVAR[x][0]] }}
+                    </div>
+                </div>
+                % end
             </div>
+            <div class='box col-1-3' style="margin-top: 10px;"><form action='/combat/change-hp/' method='POST' style='margin: 0;'>
+                <div class='grid-3x2_abt'>
+                    <div class='col-1-2'>
+                        <h3 style="margin: 0;">+/- HP</h3>
+                    </div>
+                    <div>
+                        <button>Change</button>
+                    </div>
+                    <div>
+                        <input name='change' type='number' value="0" style="width: 8ch;">
+                    </div>
+                    <div class='col-2-2'>
+                        <input name='plusminus' type="radio" value="Taken">
+                        <label>Taken</label>
+                        <input name='plusminus' type='radio' value="Restored">
+                        <label>Restored</label>
+                    </div>
+                </div>
+            </form></div>
+            <a href='/create-character/combat/'><button>Edit</button></a>  
         </div>
     </div>
     <div class='col-2-2 grid-element'>
@@ -131,7 +160,7 @@
                     Make an entry!
                 </button>
             </form>
-        </div>c
+        </div>
     </div>
     <div class='col-1-4 flex-container'>
         % for id in wallet_ids:
